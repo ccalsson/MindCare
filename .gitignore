@@ -1,20 +1,42 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+# -------------------------
+# Flutter / Dart
+# -------------------------
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+coverage/
+pubspec.lock
 
-# Firebase credentials
-.env
-flutter/
+# -------------------------
+# IDEs / Configuración local
+# -------------------------
+.idea/
+.vscode/
+*.iml
+
+# -------------------------
+# macOS / Xcode
+# -------------------------
+.DS_Store
+ios/Flutter/Flutter.podspec
+ios/Flutter/.last_build_id
+ios/Pods/
+ios/Runner.xcworkspace/
+macos/Pods/
+macos/Runner.xcworkspace/
+
+# -------------------------
+# Android / Gradle
+# -------------------------
+.android/
+.gradle/
+**/local.properties
+
+# -------------------------
+# Flutter SDK local (no debe versionarse)
+# -------------------------
 flutter/
