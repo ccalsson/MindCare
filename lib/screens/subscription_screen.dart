@@ -16,10 +16,7 @@ class SubscriptionScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Planes Sanamente'),
           bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Mensual'),
-              Tab(text: 'Anual'),
-            ],
+            tabs: [Tab(text: 'Mensual'), Tab(text: 'Anual')],
           ),
         ),
         body: TabBarView(
@@ -63,9 +60,9 @@ class SubscriptionScreen extends StatelessWidget {
               '30 minutos diarios con IA',
               'Recursos básicos',
               'Soporte por chat',
-              period == BillingPeriod.monthly ? 
-                '1 mes Premium gratis' : 
-                'Equivalente a \$9/mes',
+              period == BillingPeriod.monthly
+                  ? '1 mes Premium gratis'
+                  : 'Equivalente a \$9/mes',
             ],
             type: SubscriptionType.basic,
           ),
@@ -80,9 +77,9 @@ class SubscriptionScreen extends StatelessWidget {
               'Material exclusivo',
               'Webinars grupales',
               'Soporte prioritario',
-              period == BillingPeriod.monthly ? 
-                '1 mes Premium gratis' : 
-                'Equivalente a \$27/mes',
+              period == BillingPeriod.monthly
+                  ? '1 mes Premium gratis'
+                  : 'Equivalente a \$27/mes',
             ],
             type: SubscriptionType.plus,
             isPopular: true,
@@ -98,9 +95,9 @@ class SubscriptionScreen extends StatelessWidget {
               'Acceso total a recursos',
               'Sesiones uno a uno',
               'Soporte VIP',
-              period == BillingPeriod.yearly ? 
-                'Equivalente a \$45/mes' : 
-                'Análisis personalizado',
+              period == BillingPeriod.yearly
+                  ? 'Equivalente a \$45/mes'
+                  : 'Análisis personalizado',
             ],
             type: SubscriptionType.premium,
           ),
@@ -123,19 +120,17 @@ class SubscriptionScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          border: isPopular
-              ? Border.all(color: Theme.of(context).primaryColor, width: 2)
-              : null,
+          border:
+              isPopular
+                  ? Border.all(color: Theme.of(context).primaryColor, width: 2)
+                  : null,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Column(
           children: [
             if (isPopular)
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                  vertical: 4,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
                   borderRadius: BorderRadius.circular(12),
@@ -150,30 +145,26 @@ class SubscriptionScreen extends StatelessWidget {
               ),
             Text(
               title,
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Text(
               '\$$price',
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ...features.map((feature) => Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 4),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.check_circle, color: Colors.green),
-                      const SizedBox(width: 8),
-                      Text(feature),
-                    ],
-                  ),
-                )),
+            ...features.map(
+              (feature) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle, color: Colors.green),
+                    const SizedBox(width: 8),
+                    Text(feature),
+                  ],
+                ),
+              ),
+            ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => _handleSubscription(context, type, period),
@@ -182,9 +173,10 @@ class SubscriptionScreen extends StatelessWidget {
                   horizontal: 32,
                   vertical: 16,
                 ),
-                backgroundColor: isPopular
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey[300],
+                backgroundColor:
+                    isPopular
+                        ? Theme.of(context).primaryColor
+                        : Colors.grey[300],
               ),
               child: Text(
                 'Suscribirse',
@@ -200,7 +192,7 @@ class SubscriptionScreen extends StatelessWidget {
   }
 
   Future<void> _handleSubscription(
-    BuildContext context, 
+    BuildContext context,
     SubscriptionType type,
     BillingPeriod period,
   ) async {
@@ -211,29 +203,19 @@ class SubscriptionScreen extends StatelessWidget {
       }
 
       // Obtener o crear customer ID
-      final userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-      
+      final userDoc =
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .get();
+
       String customerId = userDoc.data()?['stripeCustomerId'];
-      
-      if (customerId == null) {
-        customerId = await StripeService.createCustomer(
-          email: user.email!,
-          name: user.displayName ?? 'Usuario',
-        );
-        
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .update({'stripeCustomerId': customerId});
-      }
 
       // Obtener plan y procesar pago
-      final planKey = '${type.toString().split('.').last}_${period.toString().split('.').last}';
+      final planKey =
+          '${type.toString().split('.').last}_${period.toString().split('.').last}';
       final plan = StripeConfig.subscriptionPlans[planKey]!;
-      
+
       final success = await StripeService.processPayment(
         amount: plan['amount'].toString(),
         currency: 'usd',
@@ -246,22 +228,29 @@ class SubscriptionScreen extends StatelessWidget {
           'type': type.toString().split('.').last,
           'billingPeriod': period.toString().split('.').last,
           'startDate': DateTime.now().toIso8601String(),
-          'endDate': DateTime.now().add(
-            period == BillingPeriod.monthly
-                ? const Duration(days: 30)
-                : const Duration(days: 365),
-          ).toIso8601String(),
+          'endDate':
+              DateTime.now()
+                  .add(
+                    period == BillingPeriod.monthly
+                        ? const Duration(days: 30)
+                        : const Duration(days: 365),
+                  )
+                  .toIso8601String(),
           'customerId': customerId,
           'isActive': true,
           'dailyMinutesLimit': plan['minutes'],
-          'hasPromotionalPremium': (type == SubscriptionType.basic || 
-              type == SubscriptionType.plus) && 
+          'hasPromotionalPremium':
+              (type == SubscriptionType.basic ||
+                  type == SubscriptionType.plus) &&
               period == BillingPeriod.monthly,
-          'promotionEndDate': (type == SubscriptionType.basic || 
-              type == SubscriptionType.plus) && 
-              period == BillingPeriod.monthly
-              ? DateTime.now().add(const Duration(days: 30)).toIso8601String()
-              : null,
+          'promotionEndDate':
+              (type == SubscriptionType.basic ||
+                          type == SubscriptionType.plus) &&
+                      period == BillingPeriod.monthly
+                  ? DateTime.now()
+                      .add(const Duration(days: 30))
+                      .toIso8601String()
+                  : null,
         };
 
         await FirebaseFirestore.instance
@@ -279,11 +268,8 @@ class SubscriptionScreen extends StatelessWidget {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
       );
     }
   }
-} 
+}
