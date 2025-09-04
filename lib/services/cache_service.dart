@@ -3,17 +3,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CacheService {
   final SharedPreferences _prefs;
-  final Duration _defaultExpiration;
+
+  CacheService(this._prefs);
+
+  static Future<CacheService> init() async {
+    final prefs = await SharedPreferences.getInstance();
+    return CacheService(prefs);
+  }
 
   Future<T?> get<T>(String key) async {
     final data = _prefs.getString(key);
     if (data == null) return null;
 
     final cached = json.decode(data);
-    if (_isExpired(cached['timestamp'])) {
-      await _prefs.remove(key);
-      return null;
-    }
     return cached['data'] as T;
   }
 
@@ -23,11 +25,5 @@ class CacheService {
       'timestamp': DateTime.now().toIso8601String(),
     };
     await _prefs.setString(key, json.encode(data));
-  }
-
-  bool _isExpired(String timestamp) {
-    // Implement the logic to check if the cached data is expired
-    // This is a placeholder and should be replaced with the actual implementation
-    return false;
   }
 } 

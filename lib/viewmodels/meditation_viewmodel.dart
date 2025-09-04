@@ -1,15 +1,18 @@
-import 'package:flutter/foundation.dart';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:just_audio/just_audio.dart';
 import '../models/meditation_models.dart';
 import '../services/meditation_repository.dart';
-import '../services/analytics_service.dart';
+import '../services/monitoring_service.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MeditationViewModel extends ChangeNotifier {
   final MeditationRepository _repository;
-  final AnalyticsService _analytics;
+  final MonitoringService _monitoringService;
   final AudioPlayer _audioPlayer = AudioPlayer();
 
   List<MeditationSession> _sessions = [];
@@ -29,7 +32,7 @@ class MeditationViewModel extends ChangeNotifier {
   bool get isWeb => kIsWeb;
   bool get isPremiumUser => _isPremiumUser;
 
-  MeditationViewModel(this._repository, this._analytics) {
+  MeditationViewModel(this._repository, this._monitoringService) {
     _loadSessions();
     _setupAudioListener();
   }
@@ -47,7 +50,7 @@ class MeditationViewModel extends ChangeNotifier {
       
       notifyListeners();
     } catch (e) {
-      print('Error cargando sesiones: $e');
+      log('Error cargando sesiones: $e');
     }
   }
 
@@ -55,7 +58,7 @@ class MeditationViewModel extends ChangeNotifier {
   void _preloadImageForWeb(String imageUrl) {
     if (kIsWeb) {
       final image = NetworkImage(imageUrl);
-      precacheImage(image as ImageProvider<Object>, null);
+      precacheImage(image, null);
     }
   }
 
@@ -66,7 +69,7 @@ class MeditationViewModel extends ChangeNotifier {
       try {
         _sessions = await _repository.getSessionsByCategory(category);
       } catch (e) {
-        print('Error filtrando por categoría: $e');
+        log('Error filtrando por categoría: $e');
       }
     } else {
       await _loadSessions();
@@ -95,7 +98,7 @@ class MeditationViewModel extends ChangeNotifier {
         _isPlaying = true;
       }
       
-      _analytics.logEvent('meditation_session_started', {
+      _monitoringService.logEvent('meditation_session_started', {
         'session_id': sessionId,
         'session_title': session.title,
         'session_category': session.category.toString(),
@@ -104,7 +107,7 @@ class MeditationViewModel extends ChangeNotifier {
       
       notifyListeners();
     } catch (e) {
-      print('Error reproduciendo sesión: $e');
+      log('Error reproduciendo sesión: $e');
     }
   }
 
@@ -114,7 +117,7 @@ class MeditationViewModel extends ChangeNotifier {
       _isPlaying = true;
       notifyListeners();
     } catch (e) {
-      print('Error al reanudar sesión: $e');
+      log('Error al reanudar sesión: $e');
       // Manejo específico para errores web
       if (kIsWeb) {
         _showWebAudioError();
@@ -130,7 +133,7 @@ class MeditationViewModel extends ChangeNotifier {
 
   Future<void> stopSession() async {
     if (_currentSession != null) {
-      _analytics.logEvent('meditation_session_completed', {
+      _monitoringService.logEvent('meditation_session_completed', {
         'session_id': _currentSession!.id,
         'session_title': _currentSession!.title,
         'session_duration': _currentProgress * _currentSession!.duration,
@@ -172,7 +175,7 @@ class MeditationViewModel extends ChangeNotifier {
   void _showWebAudioError() {
     // Esta función sería implementada en la UI para mostrar un mensaje
     // informando al usuario sobre problemas de reproducción en web
-    print('Error de reproducción en navegador web');
+    log('Error de reproducción en navegador web');
   }
 
   @override
@@ -204,4 +207,5 @@ class MeditationViewModel extends ChangeNotifier {
     }
     return sessions;
   }
-} 
+}
+ 

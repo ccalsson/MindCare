@@ -20,9 +20,10 @@ class UsageService {
     final subscription = subscriptions.docs.first.data();
     
     // Si es premium o tiene promoción premium activa
-    if (subscription['type'] == 'premium' || 
-        (subscription['hasPromotionalPremium'] == true && 
-         DateTime.parse(subscription['promotionEndDate']).isAfter(DateTime.now()))) {
+    if (subscription['type'] == 'premium' ||
+        (subscription['hasPromotionalPremium'] == true &&
+            subscription['promotionEndDate'] != null &&
+            DateTime.parse(subscription['promotionEndDate']).isAfter(DateTime.now()))) {
       return -1; // ilimitado
     }
 
@@ -38,7 +39,7 @@ class UsageService {
     final dailyLimit = subscription['dailyMinutesLimit'] as int;
     final usedMinutes = usage.exists ? usage.data()?['minutes'] ?? 0 : 0;
 
-    return dailyLimit - usedMinutes;
+    return (dailyLimit - usedMinutes).toInt();
   }
 
   static Future<void> recordUsage(int minutes) async {

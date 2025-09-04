@@ -1,12 +1,15 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:health/health.dart';
 
 class WearableService {
   final HealthFactory _health;
   StreamSubscription? _healthSubscription;
-  final Cache _cache;
-  static const int _maxCacheAge = Duration(minutes: 15).inMilliseconds;
+  final Map<String, dynamic> _cache = {};
+  static const int _maxCacheAge = 15 * 60 * 1000; // 15 minutes in milliseconds
 
-  WearableService() : _health = HealthFactory(), _cache = Cache();
+  WearableService() : _health = HealthFactory();
 
   Future<bool> requestAuthorization() async {
     final types = [
@@ -19,23 +22,23 @@ class WearableService {
     try {
       return await _health.requestAuthorization(types);
     } catch (e) {
-      print('Error requesting health authorization: $e');
+      log('Error requesting health authorization: $e');
       return false;
     }
   }
 
   Future<Map<String, dynamic>> getHealthData() async {
     // Verificar caché primero
-    final cached = await _cache.get('health_data');
+    final cached = _cache['health_data'];
     if (cached != null && _isCacheValid(cached['timestamp'])) {
       return cached['data'];
     }
 
     final data = await _fetchHealthData();
-    await _cache.set('health_data', {
+    _cache['health_data'] = {
       'data': data,
       'timestamp': DateTime.now().millisecondsSinceEpoch,
-    });
+    };
     return data;
   }
 
@@ -48,22 +51,22 @@ class WearableService {
       final now = DateTime.now();
       final midnight = DateTime(now.year, now.month, now.day);
 
-      final heartRate = await _health.getHealthDataFromType(
-        HealthDataType.HEART_RATE,
+      final heartRate = await _health.getHealthDataFromTypes(
         midnight,
         now,
+        [HealthDataType.HEART_RATE],
       );
 
-      final steps = await _health.getHealthDataFromType(
-        HealthDataType.STEPS,
+      final steps = await _health.getHealthDataFromTypes(
         midnight,
         now,
+        [HealthDataType.STEPS],
       );
 
-      final sleep = await _health.getHealthDataFromType(
-        HealthDataType.SLEEP_ASLEEP,
+      final sleep = await _health.getHealthDataFromTypes(
         midnight,
         now,
+        [HealthDataType.SLEEP_ASLEEP],
       );
 
       return {
@@ -72,29 +75,28 @@ class WearableService {
         'sleepHours': _calculateSleepHours(sleep),
       };
     } catch (e) {
-      print('Error getting health data: $e');
+      log('Error getting health data: $e');
       return {};
     }
   }
 
   double _averageHeartRate(List<HealthDataPoint> data) {
     if (data.isEmpty) return 0;
-    final sum = data.fold(0.0, (sum, point) => sum + (point.value as double));
+    final sum = data.fold(0.0, (sum, point) => sum + ((point.value as NumericHealthValue?)?.numericValue.toDouble() ?? 0.0));
     return sum / data.length;
   }
 
   int _totalSteps(List<HealthDataPoint> data) {
-    return data.fold(0, (sum, point) => sum + (point.value as int));
+    return data.fold(0, (sum, point) => sum + ((point.value as NumericHealthValue?)?.numericValue.toInt() ?? 0));
   }
 
   double _calculateSleepHours(List<HealthDataPoint> data) {
     final totalMinutes = data.fold(0.0, 
-      (sum, point) => sum + (point.value as double));
+      (sum, point) => sum + ((point.value as NumericHealthValue?)?.numericValue.toDouble() ?? 0.0));
     return totalMinutes / 60;
   }
 
   void dispose() {
     _healthSubscription?.cancel();
-    _health.disconnect();
   }
 } 

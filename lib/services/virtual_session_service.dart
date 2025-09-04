@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/virtual_session_model.dart';
+import '../models/subscription.dart';
 
 class VirtualSessionService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -56,7 +59,7 @@ class VirtualSessionService {
 
       return true;
     } catch (e) {
-      print('Error scheduling session: $e');
+      log('Error scheduling session: $e');
       return false;
     }
   }
@@ -103,5 +106,22 @@ class VirtualSessionService {
     DateTime dateTime,
   ) async {
     // Implementar sistema de notificaciones
+  }
+
+  Future<Subscription> _getCurrentSubscription(String userId) async {
+    final userDoc = await _firestore.collection('users').doc(userId).get();
+    final subscriptionData = userDoc.data()?['subscription'] as Map<String, dynamic>?;
+
+    if (subscriptionData == null) {
+      return Subscription(type: SubscriptionType.free, endDate: DateTime.now());
+    }
+
+    return Subscription(
+      type: SubscriptionType.values.firstWhere(
+        (e) => e.toString() == 'SubscriptionType.${subscriptionData["type"]}',
+        orElse: () => SubscriptionType.free,
+      ),
+      endDate: DateTime.parse(subscriptionData["endDate"] as String),
+    );
   }
 } 

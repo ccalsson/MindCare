@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+
 class MemoryOptimizer {
   static void optimizeImages(BuildContext context) {
     PaintingBinding.instance.imageCache.maximumSize = 100;

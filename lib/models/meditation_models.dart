@@ -46,6 +46,22 @@ class MeditationSession {
     required this.imageUrl,
     this.isPremium = false,
   });
+
+  factory MeditationSession.fromMap(Map<String, dynamic> map) {
+    return MeditationSession(
+      id: map['id'],
+      title: map['title'],
+      description: map['description'],
+      duration: map['duration'],
+      category: MeditationCategory.values.firstWhere(
+        (e) => e.toString() == map['category'],
+        orElse: () => MeditationCategory.beginner,
+      ),
+      audioUrl: map['audioUrl'],
+      imageUrl: map['imageUrl'],
+      isPremium: map['isPremium'] ?? false,
+    );
+  }
 }
 
 class MeditationProgress {

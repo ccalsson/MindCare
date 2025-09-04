@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class PremiumContent {
   final String id;
   final String title;
@@ -16,6 +18,18 @@ class PremiumContent {
     required this.metadata,
     required this.releaseDate,
   });
+
+  factory PremiumContent.fromMap(Map<String, dynamic> data) {
+    return PremiumContent(
+      id: data['id'] ?? '',
+      title: data['title'] ?? '',
+      description: data['description'] ?? '',
+      type: ContentType.values.firstWhere((e) => e.toString() == data['type']),
+      tags: List<String>.from(data['tags'] ?? []),
+      metadata: Map<String, dynamic>.from(data['metadata'] ?? {}),
+      releaseDate: (data['releaseDate'] as Timestamp).toDate(),
+    );
+  }
 }
 
 enum ContentType {
@@ -24,29 +38,4 @@ enum ContentType {
   workshop,
   course,
   expertTalk,
-}
-
-class PremiumContentService {
-  final _firestore = FirebaseFirestore.instance;
-
-  Future<void> addPremiumContent(PremiumContent content) async {
-    await _firestore.collection('premium_content').add({
-      'title': content.title,
-      'description': content.description,
-      'type': content.type.toString(),
-      'tags': content.tags,
-      'metadata': content.metadata,
-      'releaseDate': content.releaseDate.toIso8601String(),
-    });
-  }
-
-  Stream<List<PremiumContent>> getPremiumContent() {
-    return _firestore
-        .collection('premium_content')
-        .orderBy('releaseDate', descending: true)
-        .snapshots()
-        .map((snapshot) => snapshot.docs
-            .map((doc) => PremiumContent.fromMap(doc.data()))
-            .toList());
-  }
 } 

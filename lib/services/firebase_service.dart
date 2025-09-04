@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../models/meditation_models.dart';
@@ -18,8 +20,8 @@ class FirebaseService {
         });
       }).toList();
     } catch (e) {
-      print('Error getting sessions: $e');
-      throw e;
+      log('Error getting sessions: $e');
+      rethrow;
     }
   }
 
@@ -39,8 +41,8 @@ class FirebaseService {
         });
       }).toList();
     } catch (e) {
-      print('Error getting sessions by category: $e');
-      throw e;
+      log('Error getting sessions by category: $e');
+      rethrow;
     }
   }
 
@@ -50,8 +52,8 @@ class FirebaseService {
       final ref = _storage.ref().child('audio/$audioPath');
       return await ref.getDownloadURL();
     } catch (e) {
-      print('Error getting audio URL: $e');
-      throw e;
+      log('Error getting audio URL: $e');
+      rethrow;
     }
   }
 
@@ -73,8 +75,8 @@ class FirebaseService {
         'completedAt': completedAt.toIso8601String(),
       });
     } catch (e) {
-      print('Error saving meditation history: $e');
-      throw e;
+      log('Error saving meditation history: $e');
+      rethrow;
     }
   }
 } 

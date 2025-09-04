@@ -1,10 +1,19 @@
+import 'dart:developer';
+
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cache/cache.dart';
+import 'package:flutter/foundation.dart';
 
 class AnalyticsService {
-  final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
-  final _firestore = FirebaseFirestore.instance;
+  final FirebaseAnalytics _analytics;
+  final FirebaseFirestore _firestore;
+
+  AnalyticsService()
+      : _analytics = FirebaseAnalytics.instance,
+        _firestore = FirebaseFirestore.instance;
+
+  @visibleForTesting
+  AnalyticsService.test(this._analytics, this._firestore);
 
   Future<void> logUserActivity({
     required String userId,
@@ -54,7 +63,7 @@ class AnalyticsService {
         'improvements': _analyzeImprovements(logs.docs),
       };
     } catch (e) {
-      print('Error getting user insights: $e');
+      log('Error getting user insights: $e');
       return {};
     }
   }
@@ -62,8 +71,13 @@ class AnalyticsService {
   Map<String, int> _analyzeWeeklyActivity(List<QueryDocumentSnapshot> docs) {
     final activity = <String, int>{};
     for (var doc in docs) {
-      final type = doc.data()['type'] as String;
-      activity[type] = (activity[type] ?? 0) + 1;
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data != null) {
+        final type = data['type'] as String?;
+        if (type != null) {
+          activity[type] = (activity[type] ?? 0) + 1;
+        }
+      }
     }
     return activity;
   }
@@ -71,28 +85,46 @@ class AnalyticsService {
   Map<String, int> _analyzePreferredTimes(List<QueryDocumentSnapshot> docs) {
     final times = <String, int>{};
     for (var doc in docs) {
-      final timestamp = (doc.data()['timestamp'] as Timestamp).toDate();
-      final hour = timestamp.hour;
-      times[hour.toString()] = (times[hour.toString()] ?? 0) + 1;
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data != null) {
+        final timestamp = data['timestamp'] as Timestamp?;
+        if (timestamp != null) {
+          final hour = timestamp.toDate().hour;
+          times[hour.toString()] = (times[hour.toString()] ?? 0) + 1;
+        }
+      }
     }
     return times;
   }
 
   double _calculateCompletionRate(List<QueryDocumentSnapshot> docs) {
-    final started = docs.where((doc) => 
-      doc.data()['type'] == 'session_started').length;
-    final completed = docs.where((doc) => 
-      doc.data()['type'] == 'session_completed').length;
-    
+    final started = docs.where((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      return data != null && data['type'] == 'session_started';
+    }).length;
+    final completed = docs.where((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      return data != null && data['type'] == 'session_completed';
+    }).length;
+
     return started > 0 ? completed / started : 0;
   }
 
   int _calculateStreaks(List<QueryDocumentSnapshot> docs) {
-    final dates = docs
-        .map((doc) => (doc.data()['timestamp'] as Timestamp).toDate())
-        .map((date) => DateTime(date.year, date.month, date.day))
-        .toSet()
-        .toList()
+    final dates = docs.map((doc) {
+      final data = doc.data() as Map<String, dynamic>?;
+      if (data != null) {
+        final timestamp = data['timestamp'] as Timestamp?;
+        if (timestamp != null) {
+          final date = timestamp.toDate();
+          return DateTime(date.year, date.month, date.day);
+        }
+      }
+      return null;
+    }).where((date) => date != null)
+    .cast<DateTime>()
+    .toSet()
+    .toList()
       ..sort();
 
     int currentStreak = 0;
@@ -100,8 +132,7 @@ class AnalyticsService {
     DateTime? lastDate;
 
     for (var date in dates) {
-      if (lastDate == null || 
-          date.difference(lastDate).inDays == 1) {
+      if (lastDate == null || date.difference(lastDate!).inDays == 1) {
         currentStreak++;
       } else {
         currentStreak = 1;
@@ -116,28 +147,5 @@ class AnalyticsService {
   Map<String, dynamic> _analyzeImprovements(List<QueryDocumentSnapshot> docs) {
     // Implementar lógica de análisis de mejoras
     return {};
-  }
-}
-
-class CachedAnalyticsService {
-  final Cache _cache;
-  
-  Future<Map<String, dynamic>> getUserInsights(String userId) async {
-    // Verificar caché primero
-    final cached = await _cache.get('user_insights_$userId');
-    if (cached != null && !_isExpired(cached)) {
-      return cached;
-    }
-
-    // Realizar batch read
-    final batch = _firestore.batch();
-    final insights = await Future.wait([
-      _getWeeklyActivity(userId, batch),
-      _getPreferredTimes(userId, batch),
-      _getCompletionRate(userId, batch),
-    ]);
-
-    await _cache.set('user_insights_$userId', insights);
-    return insights;
   }
 } 

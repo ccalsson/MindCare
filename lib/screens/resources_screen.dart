@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import '../models/resource_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../models/audio_resource.dart';
 import '../services/resource_service.dart';
 
 class ResourcesScreen extends StatelessWidget {
   final ResourceService _resourceService = ResourceService();
+
+  ResourcesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +54,9 @@ class _ResourceCard extends StatelessWidget {
   final AudioResource resource;
 
   const _ResourceCard({
-    Key? key,
+    super.key,
     required this.resource,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,270 +1,299 @@
-# Sanamente - Documentación Técnica
+# MindCare - Documentación Técnica
 
 ## Índice
 1. [Descripción General](#descripción-general)
 2. [Arquitectura](#arquitectura)
-3. [Modelos de Datos](#modelos-de-datos)
-4. [Servicios](#servicios)
-5. [Sistema de Membresías](#sistema-de-membresías)
-6. [Sesiones Virtuales](#sesiones-virtuales)
-7. [Base de Datos](#base-de-datos)
-8. [Seguridad](#seguridad)
-9. [Guía de Implementación](#guía-de-implementación)
+3. [Módulos](#módulos)
+4. [Modelos de Datos](#modelos-de-datos)
+5. [Servicios](#servicios)
+6. [Sistema de Membresías](#sistema-de-membresías)
+7. [IA Transversal](#ia-transversal)
+8. [Base de Datos](#base-de-datos)
+9. [Seguridad](#seguridad)
+10. [Cloud Functions](#cloud-functions)
+11. [Guía de Implementación](#guía-de-implementación)
 
 ## Descripción General
-Sanamente es una aplicación de bienestar mental que ofrece recursos de meditación, ejercicios guiados y sesiones virtuales con profesionales. La aplicación implementa un sistema de membresías graduales que determina el acceso a diferentes funcionalidades.
+MindCare es una aplicación de bienestar mental con **IA transversal** que acompaña, guía y personaliza la experiencia del usuario sin reemplazar a los profesionales. La aplicación implementa un sistema de membresías graduales con precios segmentados por región.
 
 ## Arquitectura
-- Frontend: Flutter
-- Backend: Firebase (Firestore, Authentication, Storage)
-- Pagos: Stripe
-- Arquitectura: MVVM (Model-View-ViewModel)
+- **Frontend**: Flutter (Android/iOS/Web)
+- **Backend**: Firebase (Auth, Firestore, Storage, Remote Config, Functions)
+- **Pagos**: Stripe con precios regionales
+- **IA**: OpenAI GPT-4 con perfiles diferenciados
+- **Arquitectura**: MVVM con Provider
+- **Ruteo**: go_router
 
-## Modelos de Datos
+## Módulos
 
-### Subscription
-```dart
-enum SubscriptionType { basic, plus, premium, free }
-enum BillingPeriod { monthly, yearly }
+### 1. Bienestar
+- Chat IA empático
+- Estado de ánimo y seguimiento
+- Música relajante y sonidos
+- Técnicas de respiración y mindfulness
+- Alimentación saludable
 
-class Subscription {
-  // Propiedades principales
-  String id;
-  SubscriptionType type;
-  BillingPeriod billingPeriod;
-  DateTime startDate;
-  DateTime endDate;
-  // ... otros campos
-}
-```
+### 2. TDA/TDAH
+- Ejercicios cortos de 2-5 minutos
+- Técnicas de organización y rutinas
+- Estrategias para padres y docentes
+- Refuerzos positivos gamificados
 
-### AudioResource
-```dart
-enum ResourceType {
-  meditation,
-  relaxingSound,
-  music,
-  guidedExercise
-}
+### 3. Estudiantil
+- Técnicas de estudio y organización
+- Método Pomodoro y gestión del tiempo
+- Manejo del estrés académico
+- Explicaciones claras con IA
 
-class AudioResource {
-  String id;
-  String title;
-  String description;
-  String audioUrl;
-  ResourceType type;
-  bool isPremium;
-  int duration;
-  // ... otros campos
-}
-```
+### 4. Desarrollo Profesional
+- Evaluación de soft-skills
+- Planes de desarrollo de 4 semanas
+- Feedback 360° y autoevaluación
+- Micro-lecciones y ejercicios prácticos
 
-### VirtualSession
-```dart
-enum SessionStatus {
-  scheduled,
-  completed,
-  cancelled,
-  pending
-}
-
-class VirtualSession {
-  String id;
-  String userId;
-  String professionalId;
-  DateTime dateTime;
-  int duration;
-  double price;
-  // ... otros campos
-}
-```
+### 5. Profesionales de la Salud Mental
+- Directorio verificado
+- Disponibilidad en tiempo real
+- Reservas con pago previo
+- Chat/videollamada integrada
+- Seguimiento IA pre/post consulta
 
 ## Sistema de Membresías
 
-### Niveles y Límites
+### Precios por Región
 
-#### Básico ($10/mes o $108/año)
-- 10 recursos de audio
-- 30 minutos diarios de uso
-- Sin acceso a sesiones virtuales
-- Sin descarga de contenido
-- Sin estadísticas avanzadas
+#### LATAM (USD)
+- **Básica**: $5/mes - Módulo Bienestar
+- **Full**: $10/mes - Bienestar + Alimentación + Chat IA (50 msgs/mes)
+- **Premium**: $15/mes - Todo + TDA/TDAH + Estudiantil + Desarrollo Profesional + Acceso a Profesionales
 
-#### Plus ($30/mes o $324/año)
-- 50 recursos de audio
-- 60 minutos diarios de uso
-- 1 sesión virtual mensual
-- Descarga de contenido permitida
-- Sin estadísticas avanzadas
+#### Norteamérica (USD) y Europa (EUR)
+- **Básica**: $10/mes o €10/mes - Módulo Bienestar
+- **Full**: $15/mes o €15/mes - Bienestar + Alimentación + Chat IA (50 msgs/mes)
+- **Premium**: $20/mes o €20/mes - Todo + TDA/TDAH + Estudiantil + Desarrollo Profesional + Acceso a Profesionales
 
-#### Premium ($50/mes o $540/año)
-- Recursos ilimitados
-- Uso ilimitado
-- Sesiones virtuales ilimitadas
-- Descarga de contenido permitida
-- Estadísticas avanzadas
-- Sesión virtual gratuita mensual
+### Entitlements
+- **Básica**: módulo Bienestar
+- **Full**: Bienestar + Alimentación saludable + Chat IA limitado
+- **Premium**: Todo lo anterior + TDA/TDAH + Estudiantil + Desarrollo Profesional + Acceso al Directorio de Profesionales
 
-### Promociones
-- Planes mensuales Básico y Plus: 1 mes de acceso Premium gratis
-- Planes anuales: 10% de descuento sobre el precio mensual
+## IA Transversal
 
-## Sesiones Virtuales
+### Perfiles de IA
+- **Bienestar**: Coach empático para bienestar general
+- **TDA/TDAH**: Especialista en TDA/TDAH
+- **Estudiantil**: Coach académico
+- **Desarrollo Profesional**: Coach de soft-skills
+- **Pre-Consulta**: Preparación para consulta profesional
+- **Post-Consulta**: Seguimiento post-consulta
 
 ### Características
-- Duración: 50 minutos
-- Precio base: $100 por sesión
-- Promoción Premium: 1 sesión gratuita mensual
-- Sistema de agendamiento automático
-- Verificación de disponibilidad
-- Notificaciones automáticas
+- Lenguaje empático y directrices de seguridad
+- "No reemplazo profesional" siempre presente
+- Sugerencia de recursos y derivación si hay riesgo
+- Guardado de resúmenes con consentimiento opt-in
 
-### Flujo de Reserva
-1. Usuario selecciona profesional y horario
-2. Sistema verifica disponibilidad
-3. Sistema verifica elegibilidad para promoción
-4. Procesamiento de pago (si aplica)
-5. Confirmación y notificaciones
+## Modelos de Datos
+
+### Usuario Extendido
+```dart
+{
+  "uid": "user_id",
+  "email": "user@example.com",
+  "displayName": "Nombre Usuario",
+  "country": "AR",
+  "region": "latam",
+  "studentFlag": false,
+  "preferredModules": ["bienestar", "tda_tdh"],
+  "guardianConsent": false,
+  "createdAt": timestamp,
+  "updatedAt": timestamp
+}
+```
+
+### Profesional
+```dart
+{
+  "uid": "prof_x",
+  "name": "Dra. X",
+  "license_number": "ABC123",
+  "license_country": "AR",
+  "verified": true,
+  "verified_by": "admin_uid",
+  "specialties": ["ansiedad", "tdah"],
+  "languages": ["es", "en"],
+  "rate_currency": "USD",
+  "rate_amount": 50,
+  "country": "AR",
+  "city": "CABA",
+  "telehealth": true,
+  "bio": "Psicóloga clínica...",
+  "rating": 4.8,
+  "createdAt": timestamp
+}
+```
+
+### Suscripción
+```dart
+{
+  "id": "sub_1",
+  "userId": "user_id",
+  "type": "premium",
+  "billingPeriod": "monthly",
+  "region": "latam",
+  "price": 15.0,
+  "currency": "USD",
+  "stripePriceId": "price_latam_premium",
+  "startDate": timestamp,
+  "endDate": timestamp,
+  "isActive": true,
+  "entitlements": ["bienestar", "alimentacion_saludable", "chat_ia_ilimitado", "tda_tdh", "estudiantil", "desarrollo_profesional", "profesionales"]
+}
+```
+
+## Servicios
+
+### Core Services
+- **AiCoachService**: IA transversal con perfiles diferenciados
+- **RemoteConfigService**: Configuración remota para precios y entitlements
+- **StripeService**: Integración completa con Stripe
+- **AuthProvider**: Gestión de autenticación y usuario
+- **SubscriptionProvider**: Gestión de suscripciones y acceso
+- **AiProvider**: Estado y contexto de IA
+
+### Módulos
+- **Bienestar**: Meditación, sonidos, alimentación
+- **TDA/TDAH**: Ejercicios, rutinas, refuerzos
+- **Estudiantil**: Planner, Pomodoro, técnicas de estudio
+- **Desarrollo Profesional**: Evaluaciones, planes, feedback
+- **Profesionales**: Directorio, reservas, pagos
 
 ## Base de Datos
 
-### Colecciones en Firestore
+### Colecciones Principales
+- `users`: Usuarios con datos extendidos
+- `professionals`: Directorio de profesionales verificados
+- `availability`: Disponibilidad de profesionales
+- `bookings`: Reservas de consultas
+- `subscriptions`: Suscripciones activas
+- `audio_resources`: Recursos de audio y meditación
+- `modules_usage`: Uso de módulos (analytics opt-in)
+- `ai_chat_summaries`: Resúmenes de chat IA
 
-#### users
-```javascript
-{
-  "id": "string",
-  "email": "string",
-  "name": "string",
-  "stripeCustomerId": "string",
-  "resourcesAccessed": ["string"]
-}
-```
+### Reglas de Seguridad
+- Usuarios solo pueden acceder a sus propios datos
+- Profesionales son de lectura pública
+- Reservas solo para usuarios autenticados
+- Contenido premium según entitlements
+- Admins pueden verificar profesionales
 
-#### subscriptions
-```javascript
-{
-  "userId": "string",
-  "type": "string",
-  "billingPeriod": "string",
-  "startDate": "timestamp",
-  "endDate": "timestamp",
-  "isActive": "boolean"
-}
-```
+## Cloud Functions
 
-#### audio_resources
-```javascript
-{
-  "title": "string",
-  "description": "string",
-  "audioUrl": "string",
-  "type": "string",
-  "isPremium": "boolean",
-  "duration": "number"
-}
-```
+### Funciones Principales
+- **syncPrices**: Sincroniza precios de Stripe por región
+- **createBooking**: Crea reserva y PaymentIntent
+- **webhookStripe**: Procesa webhooks de Stripe
+- **verifyProfessional**: Verificación de profesionales (admin)
+- **syncProfessionalAvailability**: Sincroniza disponibilidad
 
-#### virtual_sessions
-```javascript
-{
-  "userId": "string",
-  "professionalId": "string",
-  "dateTime": "timestamp",
-  "duration": "number",
-  "price": "number",
-  "status": "string"
-}
-```
-
-## Seguridad
-
-### Reglas de Firestore
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // Reglas específicas por colección
-    match /users/{userId} {
-      allow read: if request.auth != null && request.auth.uid == userId;
-    }
-    
-    match /audio_resources/{resourceId} {
-      allow read: if request.auth != null;
-    }
-    
-    match /virtual_sessions/{sessionId} {
-      allow read: if request.auth != null && 
-        (resource.data.userId == request.auth.uid || 
-         resource.data.professionalId == request.auth.uid);
-    }
-  }
-}
-```
+### Configuración
+- Node.js 18+
+- Firebase Admin SDK
+- Stripe SDK
+- CORS habilitado
 
 ## Guía de Implementación
 
-### 1. Configuración del Proyecto
+### 1. Configuración Inicial
 ```bash
-# Inicializar Firebase
+# Instalar dependencias
+flutter pub get
+
+# Configurar Firebase
 firebase init
 
-# Seleccionar servicios:
-# - Firestore
-# - Authentication
-# - Storage
-# - Functions
+# Configurar variables de entorno
+cp env.example .env
+# Editar .env con tus claves
 ```
 
-### 2. Dependencias Required
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  firebase_core: ^2.15.1
-  firebase_auth: ^4.9.0
-  cloud_firestore: ^4.9.1
-  firebase_storage: ^11.2.6
-  flutter_stripe: ^9.4.0
-  provider: ^6.0.5
+### 2. Configuración de Stripe
+```bash
+# Configurar webhook secret
+firebase functions:config:set stripe.webhook_secret="whsec_xxx"
+
+# Desplegar funciones
+firebase deploy --only functions
 ```
 
-### 3. Variables de Entorno
-Crear archivo `.env`:
-```env
-STRIPE_PUBLISHABLE_KEY=pk_test_...
-STRIPE_SECRET_KEY=sk_test_...
-```
-
-### 4. Inicialización
-```dart
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  Stripe.publishableKey = ENV.stripePublishableKey;
-  runApp(MyApp());
+### 3. Configuración de Remote Config
+```json
+{
+  "region_default": "latam",
+  "plans_json": { /* estructura de precios */ },
+  "entitlements_json": { /* estructura de entitlements */ }
 }
 ```
 
-## Mantenimiento y Monitoreo
+### 4. Despliegue
+```bash
+# Desplegar reglas de Firestore
+firebase deploy --only firestore:rules
 
-### Métricas Clave
-- Uso de recursos por usuario
-- Tiempo de uso diario
-- Conversión de suscripciones
-- Retención de usuarios
-- Tasa de completado de sesiones virtuales
+# Desplegar funciones
+firebase deploy --only functions
 
-### Tareas de Mantenimiento
-- Monitoreo de cuotas de Firebase
-- Actualización de contenido
-- Backup de datos
-- Monitoreo de errores
-- Actualización de dependencias
+# Desplegar aplicación
+flutter build web
+firebase deploy --only hosting
+```
 
-## Próximas Mejoras
-1. Implementación de chat en tiempo real
-2. Sistema de recomendaciones personalizado
-3. Integración con wearables
-4. Expansión de contenido premium
-5. Mejoras en análisis de datos
+## Estándares de Calidad
+
+### Testing
+- **Unit**: EntitlementsGuard, RegionResolver
+- **Widget**: Paywall, navegación
+- **Integration**: Flujo de reserva completo
+
+### Linting
+- `flutter_lints` sin warnings
+- Análisis estático limpio
+- Formato consistente
+
+### Accesibilidad
+- Tamaños de texto apropiados
+- Contraste adecuado
+- Labels descriptivos
+- Navegación por teclado
+
+## Roadmap
+
+### Fase 1 (MVP) ✅
+- [x] Estructura modular
+- [x] Sistema de suscripciones
+- [x] IA transversal básica
+- [x] Paywall regional
+- [x] Cloud Functions
+
+### Fase 2 (Desarrollo)
+- [ ] Implementación completa de módulos
+- [ ] Chat IA avanzado
+- [ ] Sistema de notificaciones
+- [ ] Analytics y métricas
+
+### Fase 3 (Escalabilidad)
+- [ ] Múltiples idiomas
+- [ ] Integración con wearables
+- [ ] API pública
+- [ ] Marketplace de contenido
+
+## Soporte y Contacto
+
+Para soporte técnico o consultas sobre la implementación:
+- Crear issue en el repositorio
+- Documentación detallada en `/docs`
+- Ejemplos de código en `/examples`
+
+---
+
+**MindCare** - Tu compañero de bienestar mental con IA transversal 🧠✨

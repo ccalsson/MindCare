@@ -7,9 +7,6 @@ firebase init
 # - Storage
 # - Functions
 
-# Crear la base de datos en Firestore
-firebase firestore:create
-
 # Configurar las reglas de seguridad para Firestore
 cat > firestore.rules << EOL
 rules_version = '2';

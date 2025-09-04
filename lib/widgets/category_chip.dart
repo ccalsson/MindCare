@@ -7,11 +7,11 @@ class CategoryChip extends StatelessWidget {
   final VoidCallback? onTap;
 
   const CategoryChip({
-    Key? key,
+    super.key,
     required this.category,
     required this.isSelected,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class CategoryChip extends StatelessWidget {
               color: isSelected 
                   ? Theme.of(context).colorScheme.onPrimary 
                   : Theme.of(context).colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.medium,
+              fontWeight: FontWeight.w500,
               fontSize: 14.0,
             ),
           ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../services/stripe_service.dart';
 import '../models/subscription_model.dart';
 import '../config/stripe_config.dart';
@@ -6,7 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SubscriptionScreen extends StatelessWidget {
-  const SubscriptionScreen({Key? key}) : super(key: key);
+  const SubscriptionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +150,7 @@ class SubscriptionScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              '\$$price',
+              '\$price',
               style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
@@ -196,6 +197,8 @@ class SubscriptionScreen extends StatelessWidget {
     SubscriptionType type,
     BillingPeriod period,
   ) async {
+    final stripeService = Provider.of<StripeService>(context, listen: false);
+    final scaffoldMessenger = ScaffoldMessenger.of(context);
     try {
       final user = FirebaseAuth.instance.currentUser;
       if (user == null) {
@@ -216,7 +219,7 @@ class SubscriptionScreen extends StatelessWidget {
           '${type.toString().split('.').last}_${period.toString().split('.').last}';
       final plan = StripeConfig.subscriptionPlans[planKey]!;
 
-      final success = await StripeService.processPayment(
+      final success = await stripeService.processPayment(
         amount: plan['amount'].toString(),
         currency: 'usd',
         customerId: customerId,
@@ -259,7 +262,7 @@ class SubscriptionScreen extends StatelessWidget {
             .collection('subscriptions')
             .add(subscriptionData);
 
-        ScaffoldMessenger.of(context).showSnackBar(
+        scaffoldMessenger.showSnackBar(
           const SnackBar(
             content: Text('¡Suscripción activada con éxito!'),
             backgroundColor: Colors.green,
@@ -267,7 +270,7 @@ class SubscriptionScreen extends StatelessWidget {
         );
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
+      scaffoldMessenger.showSnackBar(
         SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
       );
     }

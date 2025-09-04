@@ -1,3 +1,6 @@
+import 'package:firebase_core/firebase_core.dart';
+import '../services/monitoring_service.dart';
+
 class AppException implements Exception {
   final String message;
   final String? code;
@@ -10,26 +13,29 @@ class AppException implements Exception {
 }
 
 class ErrorHandler {
-  final AnalyticsService _analytics;
+  final MonitoringService _monitoringService;
   
+  ErrorHandler(this._monitoringService);
+
   Future<T> handleError<T>(Future<T> Function() operation) async {
     try {
       return await operation();
-    } on FirebaseException catch (e) {
-      await _analytics.logError(
+    } on FirebaseException catch (e, s) {
+      await _monitoringService.logError(
         error: e,
-        code: e.code,
-        details: e.message,
+        stackTrace: s,
+        reason: 'Error en la operación: ${e.message}',
       );
       throw AppException(
         'Error en la operación: ${e.message}',
         code: e.code,
         originalError: e,
       );
-    } catch (e) {
-      await _analytics.logError(
+    } catch (e, s) {
+      await _monitoringService.logError(
         error: e,
-        code: 'unknown_error',
+        stackTrace: s,
+        reason: 'Error inesperado',
       );
       throw AppException(
         'Error inesperado',
@@ -38,4 +44,5 @@ class ErrorHandler {
       );
     }
   }
-} 
+}
+ 
