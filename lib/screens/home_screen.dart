@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mindcare/screens/professionals_screen.dart';
+import 'package:mindcare/screens/my_bookings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -54,7 +55,19 @@ class HomeScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.medical_services_outlined),
               label: const Text('Ver profesionales (Supabase)'),
-            )
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const MyBookingsScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.event_available_outlined),
+              label: const Text('Mis reservas'),
+            ),
           ],
         ),
       ),

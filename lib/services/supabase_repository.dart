@@ -20,23 +20,32 @@ class SupabaseRepository {
     return List<Map<String, dynamic>>.from(res as List);
   }
 
-  /// Book a slot: creates booking and marks slot as booked
-  Future<void> bookSlot({
-    required String userId,
+  /// Book a slot via RPC (atomic on the server)
+  Future<String> bookSlot({
     required String professionalId,
     required String slotId,
+    double priceAmount = 100,
+    String priceCurrency = 'usd',
   }) async {
     final c = SupabaseService.client;
-    // Create booking
-    await c.from('bookings').insert({
-      'user_id': userId,
+    final res = await c.rpc('book_slot', params: {
       'professional_id': professionalId,
       'slot_id': slotId,
-      'price_amount': 100,
-      'price_currency': 'usd',
-      'status': 'confirmed',
+      'price_amount': priceAmount,
+      'price_currency': priceCurrency,
     });
-    // Mark slot as booked (best-effort)
-    await c.from('availability_slots').update({'status': 'booked'}).eq('id', slotId);
+    // res is booking id
+    return res as String;
+  }
+
+  /// List current user bookings with joined info
+  Future<List<Map<String, dynamic>>> myBookings() async {
+    final c = SupabaseService.client;
+    final res = await c
+        .from('bookings')
+        .select(
+            'id, status, price_amount, price_currency, created_at, professionals(name, specialty), availability_slots(start_at, end_at)')
+        .order('created_at', ascending: false);
+    return List<Map<String, dynamic>>.from(res as List);
   }
 }

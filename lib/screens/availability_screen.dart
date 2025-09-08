@@ -65,7 +65,6 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
                           if (user == null) return;
                           try {
                             await _repo.bookSlot(
-                              userId: user.id,
                               professionalId: widget.professionalId,
                               slotId: s['id'] as String,
                             );
