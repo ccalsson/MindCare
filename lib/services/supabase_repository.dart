@@ -19,5 +19,24 @@ class SupabaseRepository {
         .order('start_at');
     return List<Map<String, dynamic>>.from(res as List);
   }
-}
 
+  /// Book a slot: creates booking and marks slot as booked
+  Future<void> bookSlot({
+    required String userId,
+    required String professionalId,
+    required String slotId,
+  }) async {
+    final c = SupabaseService.client;
+    // Create booking
+    await c.from('bookings').insert({
+      'user_id': userId,
+      'professional_id': professionalId,
+      'slot_id': slotId,
+      'price_amount': 100,
+      'price_currency': 'usd',
+      'status': 'confirmed',
+    });
+    // Mark slot as booked (best-effort)
+    await c.from('availability_slots').update({'status': 'booked'}).eq('id', slotId);
+  }
+}
