@@ -1,16 +1,27 @@
-# mindcare
+# MindCare
 
-A new Flutter project.
+Setup rápido (5 minutos)
 
-## Getting Started
+- Requisitos: Flutter 3.x, Firebase CLI, Node 18+, cuenta de Firebase y Supabase.
+- Copiá variables: `cp .env.sample .env` y completá valores.
+- Android: minSdk = 26 (ya configurado en `android/app/build.gradle.kts`).
 
-This project is a starting point for a Flutter application.
+Firebase (prod)
+- Firestore: creado y con seed mínimo.
+- Storage: reglas desplegadas; assets subidos (placeholder).
+- Para re-seed + assets: exportá `GOOGLE_APPLICATION_CREDENTIALS` y corré `tools/seed_and_assets.sh`.
 
-A few resources to get you started if this is your first Flutter project:
+Supabase
+- Esquema y seed inicial listos.
+- Aplicar (si fuese necesario):
+  - `export NODE_PATH=server/functions/node_modules:$NODE_PATH`
+  - `node server/sql/apply_schema.mjs "postgresql://..."`
+  - `node server/sql/apply_seed.mjs "postgresql://..."`
+  - Demo (pros+slots): `node server/sql/apply_seed_demo.mjs "postgresql://..."`
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+CI/CD
+- Workflow en `.github/workflows/flutter-ci.yml` con analyze/test/build web.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Entorno
+- `.env.sample` contiene claves de Firebase, Supabase, Stripe, etc.
+- No comitear `.env` ni claves; el repo ignora `server/keys/*.json`.

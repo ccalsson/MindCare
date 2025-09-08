@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mindcare/utils/context_provider.dart';
 import 'package:mindcare/screens/login_screen.dart';
 import 'package:mindcare/screens/home_screen.dart';
+import 'package:mindcare/services/supabase_service.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ Future<void> main() async {
   try {
     await dotenv.load(fileName: ".env");
     await Firebase.initializeApp();
+    await SupabaseService.init();
   } catch (_) {}
   FlutterNativeSplash.remove();
   runApp(const MyApp());
