@@ -1,3 +1,4 @@
+import "package:mindcare/utils/context_provider.dart";
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -40,14 +41,14 @@ class MeditationViewModel extends ChangeNotifier {
   Future<void> _loadSessions() async {
     try {
       _sessions = await _repository.getAllSessions();
-      
+
       // Optimización para web: precarga metadatos pero no audio
       if (kIsWeb) {
         for (var session in _sessions) {
           _preloadImageForWeb(session.imageUrl);
         }
       }
-      
+
       notifyListeners();
     } catch (e) {
       log('Error cargando sesiones: $e');
@@ -58,13 +59,13 @@ class MeditationViewModel extends ChangeNotifier {
   void _preloadImageForWeb(String imageUrl) {
     if (kIsWeb) {
       final image = NetworkImage(imageUrl);
-      precacheImage(image, null);
+      precacheImage(image, ContextProvider.context);
     }
   }
 
   void selectCategory(MeditationCategory? category) async {
     _selectedCategory = category;
-    
+
     if (category != null) {
       try {
         _sessions = await _repository.getSessionsByCategory(category);
@@ -74,21 +75,21 @@ class MeditationViewModel extends ChangeNotifier {
     } else {
       await _loadSessions();
     }
-    
+
     notifyListeners();
   }
 
   Future<void> playSession(String sessionId) async {
     final session = _sessions.firstWhere((s) => s.id == sessionId);
     _currentSession = session;
-    
+
     try {
       // Manejo especial para web
       if (kIsWeb) {
         // Inicializar audio solo cuando el usuario interactúa explícitamente
         await _audioPlayer.setUrl(session.audioUrl);
         _audioInitialized = true;
-        
+
         // En web, esperamos a que el usuario presione play explícitamente
         // para cumplir con las políticas de autoplay
         _isPlaying = false;
@@ -97,14 +98,14 @@ class MeditationViewModel extends ChangeNotifier {
         await _audioPlayer.play();
         _isPlaying = true;
       }
-      
+
       _monitoringService.logEvent('meditation_session_started', {
         'session_id': sessionId,
         'session_title': session.title,
         'session_category': session.category.toString(),
         'platform': kIsWeb ? 'web' : 'mobile',
       });
-      
+
       notifyListeners();
     } catch (e) {
       log('Error reproduciendo sesión: $e');
@@ -140,7 +141,7 @@ class MeditationViewModel extends ChangeNotifier {
         'platform': kIsWeb ? 'web' : 'mobile',
       });
     }
-    
+
     await _audioPlayer.stop();
     _currentSession = null;
     _isPlaying = false;
@@ -153,11 +154,11 @@ class MeditationViewModel extends ChangeNotifier {
     _audioPlayer.positionStream.listen((position) {
       if (_currentSession != null) {
         _currentProgress = position.inSeconds / _currentSession!.duration;
-        
+
         if (_currentProgress >= 0.99) {
           stopSession();
         }
-        
+
         notifyListeners();
       }
     });
@@ -208,4 +209,3 @@ class MeditationViewModel extends ChangeNotifier {
     return sessions;
   }
 }
- 

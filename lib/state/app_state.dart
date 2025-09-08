@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
-import '../services/cache_service.dart';
 import '../core/data/repository.dart';
 
 GetIt locator = GetIt.instance;

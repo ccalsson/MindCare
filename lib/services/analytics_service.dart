@@ -132,7 +132,7 @@ class AnalyticsService {
     DateTime? lastDate;
 
     for (var date in dates) {
-      if (lastDate == null || date.difference(lastDate!).inDays == 1) {
+      if (lastDate == null || date.difference(lastDate).inDays == 1) {
         currentStreak++;
       } else {
         currentStreak = 1;

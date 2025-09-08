@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+<<<<<<< HEAD
 import {
   initializeTestEnvironment,
   assertFails,
@@ -24,11 +25,30 @@ before(async () => {
     firestore: {
       rules: readFileSync('../../firestore.rules', 'utf8'),
     },
+=======
+import * as firebase from '@firebase/rules-unit-testing';
+import { assertFails, assertSucceeds } from '@firebase/rules-unit-testing';
+
+const projectId = 'mindcare-test';
+
+function getDb(auth?: any) {
+  return firebase.initializeTestApp({ projectId, auth }).firestore();
+}
+
+before(async () => {
+  await firebase.loadFirestoreRules({
+    projectId,
+    rules: readFileSync('../../firestore.rules', 'utf8'),
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
   });
 });
 
 after(async () => {
+<<<<<<< HEAD
   await testEnv.cleanup();
+=======
+  await Promise.all(firebase.apps().map((app) => app.delete()));
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
 });
 
 describe('Firestore security', () => {
@@ -43,6 +63,7 @@ describe('Firestore security', () => {
     const ref = db.collection('emotions').doc('u2').collection('entries').doc('e1');
     await assertFails(ref.get());
   });
+<<<<<<< HEAD
 
   it('allows owner billing access', async () => {
     const db = getDb({ uid: 'u1', token: { role: 'user' } });
@@ -73,4 +94,6 @@ describe('Firestore security', () => {
     const ref = db.collection('professionals').doc('p1');
     await assertSucceeds(ref.set({ foo: 'bar' }));
   });
+=======
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
 });

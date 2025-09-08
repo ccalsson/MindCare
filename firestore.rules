@@ -19,12 +19,20 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+<<<<<<< HEAD
     match /billing/{uid}/subscriptions/{id} {
+=======
+    match /billing/{uid}/{docId} {
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
       allow read, write: if isOwner(uid);
     }
 
     match /professionals/{pid} {
+<<<<<<< HEAD
       allow read: if true; // public profile
+=======
+      allow read: if true;
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
       allow write: if hasRole('admin');
     }
 

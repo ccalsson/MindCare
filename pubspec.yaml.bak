@@ -1,0 +1,94 @@
+name: mindcare
+description: Una aplicación de bienestar mental y meditación con IA transversal
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.5
+  
+  # State Management
+  provider: ^6.1.1
+  
+  # HTTP & API
+  http: ^1.5.0
+  
+  # Storage & Cache
+  shared_preferences: ^2.2.2
+  
+  # Web Support
+  flutter_web_plugins:
+    sdk: flutter
+  
+  # Firebase
+  firebase_core: ^4.1.0
+  firebase_auth: ^6.0.2
+  cloud_firestore: ^6.0.1
+  firebase_storage: ^13.0.1
+  firebase_analytics: ^12.0.1
+  firebase_remote_config: ^6.0.1
+  cloud_functions: ^6.0.1
+  
+  # Payments
+  flutter_stripe: ^12.0.2
+  
+  # Routing
+  go_router: ^16.2.1
+  
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+  
+  # Environment & Config
+  flutter_dotenv: ^6.0.0
+  
+  # UI Components
+  flutter_svg: ^2.0.9
+  shimmer: ^3.0.0
+  
+  # Utils
+  uuid: ^4.2.1
+  firebase_crashlytics: ^5.0.1
+  firebase_performance: ^0.11.0+1
+  health: ^13.1.4
+  get_it: ^8.2.0
+  just_audio: ^0.10.4
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  mockito: ^5.5.0
+  test: ^1.26.2
+  mocktail: ^1.0.4
+  flutter_native_splash: ^2.4.0
+  flutter_launcher_icons: ^0.13.1
+
+  fake_cloud_firestore: ^4.0.0
+
+flutter:
+  uses-material-design: true
+  
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/audio/
+    - assets/fonts/
+    - .env
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/splash.png
+  android: true
+  ios: true
+  web: false
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icons/app_icon.png"

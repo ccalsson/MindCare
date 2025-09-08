@@ -54,7 +54,6 @@ class _ResourceCard extends StatelessWidget {
   final AudioResource resource;
 
   const _ResourceCard({
-    super.key,
     required this.resource,
   });
 

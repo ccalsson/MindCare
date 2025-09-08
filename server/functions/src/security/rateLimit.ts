@@ -1,8 +1,11 @@
 import * as functions from 'firebase-functions';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
+<<<<<<< HEAD
 // Simple in-memory limiter. For multi-instance deployments, use Firestore or
 // Redis store to share state across functions. TTL is set via `duration`.
+=======
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
 const limiter = new RateLimiterMemory({ points: 5, duration: 60 });
 
 export const rateLimit = functions.https.onRequest(async (req, res) => {

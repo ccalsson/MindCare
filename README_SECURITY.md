@@ -26,6 +26,7 @@ Use Firebase Secret Manager to store:
 - `STRIPE_WEBHOOK_SECRET`
 - `RECAPTCHA_SECRET`
 - `ANON_SALT`
+<<<<<<< HEAD
 - `APP_CHECK_SITE_KEY` (web)
 
 Enable App Check in Firebase console for Android/iOS (DeviceCheck/PlayIntegrity)
@@ -43,6 +44,10 @@ These variables should also be configured as GitHub Action secrets for CI/CD.
 
 ## Data Access
 - Users can request export or deletion of their data in compliance with GDPR and Ley 25.326.
+=======
+
+Create a `.env` from `.env.sample` and load into Secret Manager as needed.
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
 
 ## Setup Commands
 ```bash

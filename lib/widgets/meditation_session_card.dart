@@ -6,10 +6,10 @@ class MeditationSessionCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const MeditationSessionCard({
-    Key? key,
+    super.key,
     required this.session,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +85,7 @@ class MeditationSessionCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surfaceVariant,
+        color: Theme.of(context).colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(16.0),
       ),
       child: Text(

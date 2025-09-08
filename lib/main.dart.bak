@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as dotenv;
+import 'package:mindcare/utils/context_provider.dart';
+
+Future<void> main() async {
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  try { await dotenv.DotEnv().load(fileName: ".env"); } catch (_) {}
+  FlutterNativeSplash.remove();
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+  @override
+  Widget build(BuildContext context) {
+    ContextProvider.setContext(context);
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const _HealthCheckScreen(),
+    );
+  }
+}
+
+class _HealthCheckScreen extends StatelessWidget {
+  const _HealthCheckScreen({super.key});
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Text(
+          'MindCare OK',
+          style: Theme.of(context).textTheme.headlineMedium,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+  }
+}

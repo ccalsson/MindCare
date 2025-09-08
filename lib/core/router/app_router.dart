@@ -106,7 +106,7 @@ class AppRouter {
 
 // Pantallas temporales hasta que se implementen las reales
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +142,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class BienestarScreen extends StatelessWidget {
-  const BienestarScreen({Key? key}) : super(key: key);
+  const BienestarScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -162,7 +162,7 @@ class BienestarScreen extends StatelessWidget {
 }
 
 class TdaTdhScreen extends StatelessWidget {
-  const TdaTdhScreen({Key? key}) : super(key: key);
+  const TdaTdhScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +182,7 @@ class TdaTdhScreen extends StatelessWidget {
 }
 
 class EstudiantilScreen extends StatelessWidget {
-  const EstudiantilScreen({Key? key}) : super(key: key);
+  const EstudiantilScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -202,7 +202,7 @@ class EstudiantilScreen extends StatelessWidget {
 }
 
 class DesarrolloProfesionalScreen extends StatelessWidget {
-  const DesarrolloProfesionalScreen({Key? key}) : super(key: key);
+  const DesarrolloProfesionalScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -222,7 +222,7 @@ class DesarrolloProfesionalScreen extends StatelessWidget {
 }
 
 class ProfesionalesScreen extends StatelessWidget {
-  const ProfesionalesScreen({Key? key}) : super(key: key);
+  const ProfesionalesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -245,9 +245,9 @@ class ProfesionalDetailScreen extends StatelessWidget {
   final String professionalId;
 
   const ProfesionalDetailScreen({
-    Key? key,
+    super.key,
     required this.professionalId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -277,9 +277,9 @@ class BookingScreen extends StatelessWidget {
   final String bookingId;
 
   const BookingScreen({
-    Key? key,
+    super.key,
     required this.bookingId,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +306,7 @@ class BookingScreen extends StatelessWidget {
 }
 
 class PaywallScreen extends StatelessWidget {
-  const PaywallScreen({Key? key}) : super(key: key);
+  const PaywallScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -326,7 +326,7 @@ class PaywallScreen extends StatelessWidget {
 }
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +355,7 @@ class SettingsScreen extends StatelessWidget {
 }
 
 class ErrorScreen extends StatelessWidget {
-  const ErrorScreen({Key? key}) : super(key: key);
+  const ErrorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

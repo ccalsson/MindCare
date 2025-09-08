@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "lib"
+  },
+  "include": [
+    "src/index_seed.ts",
+    "src/maintenance/seed.ts"
+  ]
+}

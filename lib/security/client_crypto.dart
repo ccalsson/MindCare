@@ -14,7 +14,10 @@ class ClientCrypto {
       await _storage.write(key: 'user_key', value: keyData);
     }
     final key = Key(base64Url.decode(keyData));
+<<<<<<< HEAD
     // TODO: implement periodic key rotation and re-encryption of data.
+=======
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
     return Encrypter(AES(key, mode: AESMode.gcm));
   }
 

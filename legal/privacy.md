@@ -1,5 +1,6 @@
 # Privacy Policy
 
+<<<<<<< HEAD
 MindCare respects your privacy. This template outlines how we handle data and
 should be replaced with a full policy before production.
 
@@ -10,3 +11,6 @@ should be replaced with a full policy before production.
 
 ## Contact
 For questions contact `privacy@example.com`.
+=======
+This is the privacy policy placeholder. Replace with actual policy before release.
+>>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)

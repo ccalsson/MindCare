@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/patient_provider.dart';
 
 class PatientScreen extends StatelessWidget {
+  const PatientScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
