@@ -51,7 +51,7 @@ dependencies:
   # UI Components
   flutter_svg: ^2.0.9
   shimmer: ^3.0.0
-  
+
   # Utils
   uuid: ^4.2.1
   firebase_crashlytics: ^3.5.7
@@ -63,6 +63,7 @@ dependencies:
   health: ^13.1.4
   get_it: ^8.2.0
   just_audio: ^0.10.4
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:

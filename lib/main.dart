@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'config/theme.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
@@ -155,13 +156,7 @@ class MyApp extends StatelessWidget {
         routerConfig: AppRouter.router,
 
         // Temas
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.light,
-          ),
-          fontFamily: 'Inter',
+        theme: AppTheme.lightTheme.copyWith(
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: {
               TargetPlatform.android: ZoomPageTransitionsBuilder(),
@@ -169,14 +164,7 @@ class MyApp extends StatelessWidget {
             },
           ),
         ),
-        darkTheme: ThemeData(
-          primarySwatch: Colors.blue,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
-            brightness: Brightness.dark,
-          ),
-          fontFamily: 'Inter',
-        ),
+        darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
       ),
     );
