@@ -1,117 +1,40 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-
-    function isSignedIn() { 
-      return request.auth != null; 
+    function isSignedIn() {
+      return request.auth != null;
     }
-    
-    function isOwner(uid) { 
-      return isSignedIn() && request.auth.uid == uid; 
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
     }
-    
-    function isAdmin() {
-      return isSignedIn() && 
-             request.auth.uid in get(/databases/$(database)/documents/admins/roles).data.admin_users;
+    function hasRole(role) {
+      return isSignedIn() && request.auth.token.role == role;
     }
 
-    // Usuarios
     match /users/{uid} {
-      allow read: if isOwner(uid);
-      allow write: if isOwner(uid);
-      
-      // Historial de uso de módulos (analytics opt-in)
-      match /modules_usage/{docId} {
-        allow read, write: if isOwner(uid);
-      }
-      
-      // Historial de meditación
-      match /meditation_history/{sessionId} {
-        allow read, write: if isOwner(uid);
-      }
+      allow read, write: if isOwner(uid);
     }
 
-    // Profesionales
+    match /emotions/{uid}/entries/{entryId} {
+      allow read, write: if isOwner(uid);
+    }
+
+    match /billing/{uid}/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+
     match /professionals/{pid} {
-      allow read: if true; // Datos públicos no sensibles
-      allow write: if false; // Solo admins pueden crear/editar
+      allow read: if true;
+      allow write: if hasRole('admin');
     }
 
-    // Disponibilidad de profesionales
-    match /availability/{pid} {
-      allow read: if true; // Pública para ver slots disponibles
-      allow write: if false; // Solo admins/profesional vía Cloud Functions
+    match /analytics/{docId} {
+      allow write: if hasRole('admin');
+      allow read: if false;
     }
 
-    // Reservas
-    match /bookings/{bid} {
-      allow create: if isSignedIn() && 
-                     request.resource.data.userId == request.auth.uid;
-      allow read: if isSignedIn() && 
-                   (resource.data.userId == request.auth.uid || 
-                    resource.data.professionalId in get(/databases/$(database)/documents/professionals).data.keys());
-      allow update: if isSignedIn() && 
-                     request.auth.uid == resource.data.userId;
-      allow delete: if false; // No permitir eliminación
-    }
-
-    // Recursos de audio/meditación
-    match /audio_resources/{doc} {
-      allow read: if isSignedIn();
-      allow write: if false; // Solo admins
-    }
-
-    // Categorías de recursos
-    match /categories/{categoryId} {
-      allow read: if isSignedIn();
-      allow write: if false; // Solo admins
-    }
-
-    // Suscripciones
-    match /subscriptions/{subId} {
-      allow read: if isSignedIn() && 
-                   resource.data.userId == request.auth.uid;
-      allow write: if isSignedIn() && 
-                    request.resource.data.userId == request.auth.uid;
-    }
-
-    // Contenido premium
-    match /premium_content/{doc} {
-      allow read: if isSignedIn();
-      allow write: if false; // Solo admins
-    }
-
-    // Sesiones virtuales
-    match /virtual_sessions/{sessionId} {
-      allow read: if isSignedIn() && 
-                   (resource.data.userId == request.auth.uid || 
-                    resource.data.professionalId in get(/databases/$(database)/documents/professionals).data.keys());
-      allow write: if isSignedIn() && 
-                    request.resource.data.userId == request.auth.uid;
-    }
-
-    // Chat IA (resúmenes con consentimiento)
-    match /ai_chat_summaries/{docId} {
-      allow read, write: if isSignedIn() && 
-                          resource.data.userId == request.auth.uid;
-    }
-
-    // Configuración de la aplicación
-    match /app_config/{doc} {
-      allow read: if true; // Pública
-      allow write: if isAdmin(); // Solo admins
-    }
-
-    // Admins
-    match /admins/roles {
-      allow read: if isAdmin();
-      allow write: if isAdmin();
-    }
-
-    // Logs de auditoría
-    match /audit_logs/{doc} {
-      allow read: if isAdmin();
-      allow write: if isAdmin();
+    match /audit_logs/{docId} {
+      allow read, write: if hasRole('admin');
     }
   }
-} 
+}
