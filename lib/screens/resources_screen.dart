@@ -66,10 +66,7 @@ class _ResourceCard extends StatelessWidget {
         children: [
           AspectRatio(
             aspectRatio: 1,
-            child: Image.network(
-              resource.thumbnailUrl ?? 'assets/images/default_audio.png',
-              fit: BoxFit.cover,
-            ),
+            child: Image.network(resource.thumbnailUrl, fit: BoxFit.cover),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

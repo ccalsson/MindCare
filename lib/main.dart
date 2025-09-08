@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mindcare/utils/context_provider.dart';
-import 'package:mindcare/screens/login_screen.dart';
+// import 'package:mindcare/screens/login_screen.dart';
 import 'package:mindcare/screens/home_screen.dart';
 import 'package:mindcare/services/supabase_service.dart';
 import 'package:mindcare/screens/welcome_screen.dart';

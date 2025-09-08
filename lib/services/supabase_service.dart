@@ -18,7 +18,7 @@ class SupabaseService {
       // Do not initialize with placeholders; caller can check hasConfig
       throw StateError('Supabase no configurado: define SUPABASE_URL y SUPABASE_ANON_KEY en .env');
     }
-    await Supabase.initialize(url: url, anonKey: anon);
+    await Supabase.initialize(url: url!, anonKey: anon!);
     _initialized = true;
   }
 
