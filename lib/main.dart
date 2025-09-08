@@ -8,6 +8,8 @@ import 'package:mindcare/utils/context_provider.dart';
 // import 'package:mindcare/screens/login_screen.dart';
 import 'package:mindcare/screens/home_screen.dart';
 import 'package:mindcare/services/supabase_service.dart';
+import 'package:provider/provider.dart';
+import 'providers/membership_provider.dart';
 import 'package:mindcare/screens/welcome_screen.dart';
 
 Future<void> main() async {
@@ -62,13 +64,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ContextProvider.setContext(context);
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MembershipProvider()),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          useMaterial3: true,
+        ),
+        home: const AuthGate(),
       ),
-      home: const AuthGate(),
     );
   }
 }
