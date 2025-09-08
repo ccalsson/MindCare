@@ -22,7 +22,7 @@
     "cors": "^2.8.5",
     "zod": "^3.22.4",
     "rate-limiter-flexible": "^7.3.0",
-    "@google-cloud/logging": "^10.4.0",
+    "@google-cloud/logging": "^11.2.1",
     "@google-cloud/monitoring": "^3.0.0"
   },
   "devDependencies": {
