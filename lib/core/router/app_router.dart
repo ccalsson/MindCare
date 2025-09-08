@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../screens/two_factor_setup_screen.dart';
+import '../../screens/professional_onboarding_screen.dart';
+import '../../screens/privacy_policy_screen.dart';
+import '../../screens/billing_history_screen.dart';
+import '../../screens/plan_upgrade_screen.dart';
+
 // Importar pantallas (se crearán después)
 // import '../modules/bienestar/screens/bienestar_screen.dart';
 // import '../modules/tda_tdh/screens/tda_tdh_screen.dart';
@@ -72,6 +78,26 @@ class AppRouter {
           GoRoute(
             path: settings,
             builder: (context, state) => const SettingsScreen(),
+          ),
+          GoRoute(
+            path: '/mfa-setup',
+            builder: (context, state) => const TwoFactorSetupScreen(),
+          ),
+          GoRoute(
+            path: '/onboarding/professional',
+            builder: (context, state) => const ProfessionalOnboardingScreen(),
+          ),
+          GoRoute(
+            path: '/privacy',
+            builder: (context, state) => const PrivacyPolicyScreen(),
+          ),
+          GoRoute(
+            path: '/billing/history',
+            builder: (context, state) => const BillingHistoryScreen(),
+          ),
+          GoRoute(
+            path: '/plan/upgrade',
+            builder: (context, state) => const PlanUpgradeScreen(),
           ),
         ],
         errorBuilder: (context, state) => const ErrorScreen(),
@@ -312,8 +338,17 @@ class SettingsScreen extends StatelessWidget {
           onPressed: () => context.go(AppRouter.home),
         ),
       ),
-      body: const Center(
-        child: Text('Configuración - En desarrollo'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Configuración - En desarrollo'),
+            TextButton(
+              onPressed: () => context.go('/privacy'),
+              child: const Text('Privacy Policy'),
+            ),
+          ],
+        ),
       ),
     );
   }

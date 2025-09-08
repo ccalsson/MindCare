@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(functions.config().stripe.secret, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-08-16',
 });
 
 export const stripeWebhook = functions.https.onRequest((req, res) => {
@@ -15,6 +15,15 @@ export const stripeWebhook = functions.https.onRequest((req, res) => {
     res.status(400).send(`Webhook Error: ${(err as Error).message}`);
     return;
   }
-  console.log('Received event', event.type);
+  switch (event.type) {
+    case 'checkout.session.completed':
+    case 'invoice.paid':
+    case 'customer.subscription.updated':
+    case 'customer.subscription.deleted':
+      console.log('Handled', event.type);
+      break;
+    default:
+      console.log('Unhandled event', event.type);
+  }
   res.json({ received: true });
 });

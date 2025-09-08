@@ -1,16 +1,22 @@
-# mindcare
+# MindCare
 
-A new Flutter project.
+MindCare es una app de bienestar mental construida con Flutter y Firebase.
 
-## Getting Started
+## Setup
 
-This project is a starting point for a Flutter application.
+1. Copiá `.env.sample` a `.env` y completá las variables necesarias.
+2. Ejecutá `flutter pub get`.
+3. Para Cloud Functions: `npm --prefix server/functions ci`.
 
-A few resources to get you started if this is your first Flutter project:
+## App Check y Stripe
+- Configurá Firebase App Check con la llave de sitio para web (`APP_CHECK_SITE_KEY`).
+- Añadí las claves de Stripe (`STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`).
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Build
+- Android: `flutter build apk`
+- iOS: `flutter build ios`
+- Web: `flutter build web`
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Para más detalles de seguridad consultá [README_SECURITY.md](README_SECURITY.md).
+
+En iOS/macOS configurá Signing & Capabilities en Xcode antes de compilar.
