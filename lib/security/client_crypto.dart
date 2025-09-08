@@ -14,6 +14,7 @@ class ClientCrypto {
       await _storage.write(key: 'user_key', value: keyData);
     }
     final key = Key(base64Url.decode(keyData));
+    // TODO: implement periodic key rotation and re-encryption of data.
     return Encrypter(AES(key, mode: AESMode.gcm));
   }
 

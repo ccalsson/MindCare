@@ -26,8 +26,23 @@ Use Firebase Secret Manager to store:
 - `STRIPE_WEBHOOK_SECRET`
 - `RECAPTCHA_SECRET`
 - `ANON_SALT`
+- `APP_CHECK_SITE_KEY` (web)
+
+Enable App Check in Firebase console for Android/iOS (DeviceCheck/PlayIntegrity)
+and use the above site key for web reCAPTCHA.
+
+Sensitive login/registration forms should also include reCAPTCHA v3 or rely on
+App Check tokens to mitigate automated abuse.
 
 Create a `.env` from `.env.sample` and load into Secret Manager as needed.
+These variables should also be configured as GitHub Action secrets for CI/CD.
+
+## Audit & Rate Limiting
+- Audit logs for emotion writes: `server/functions/src/security/auditLog.ts`.
+- Rate limiting example: `server/functions/src/security/rateLimit.ts`.
+
+## Data Access
+- Users can request export or deletion of their data in compliance with GDPR and Ley 25.326.
 
 ## Setup Commands
 ```bash

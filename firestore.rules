@@ -19,12 +19,12 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
-    match /billing/{uid}/{docId} {
+    match /billing/{uid}/subscriptions/{id} {
       allow read, write: if isOwner(uid);
     }
 
     match /professionals/{pid} {
-      allow read: if true;
+      allow read: if true; // public profile
       allow write: if hasRole('admin');
     }
 

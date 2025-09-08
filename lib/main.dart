@@ -156,12 +156,12 @@ class MyApp extends StatelessWidget {
 
         // Temas
         theme: ThemeData(
-          primarySwatch: Colors.blue,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
+            seedColor: Colors.teal,
             brightness: Brightness.light,
           ),
-          fontFamily: 'Inter',
+          fontFamily: 'Poppins',
+          scaffoldBackgroundColor: Colors.teal[50],
           pageTransitionsTheme: const PageTransitionsTheme(
             builders: {
               TargetPlatform.android: ZoomPageTransitionsBuilder(),
@@ -170,12 +170,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
         darkTheme: ThemeData(
-          primarySwatch: Colors.blue,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue,
+            seedColor: Colors.teal,
             brightness: Brightness.dark,
           ),
-          fontFamily: 'Inter',
+          fontFamily: 'Poppins',
         ),
         themeMode: ThemeMode.system,
       ),

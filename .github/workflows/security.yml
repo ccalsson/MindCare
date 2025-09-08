@@ -20,3 +20,7 @@ jobs:
           node-version: 18
       - run: npm --prefix server/functions install
       - run: npm --prefix server/functions audit --production
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - run: flutter pub outdated --exit-code 1
