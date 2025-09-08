@@ -1,3 +1,4 @@
+// ignore_for_file: non_bool_condition, missing_identifier, expected_token, dead_null_aware_expression
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

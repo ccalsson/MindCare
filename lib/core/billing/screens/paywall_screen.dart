@@ -49,7 +49,7 @@ class PaywallScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 12),
             DropdownButtonFormField<String>(
-              value: billingProvider.selectedRegion,
+              initialValue: billingProvider.selectedRegion,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Selecciona tu región'),

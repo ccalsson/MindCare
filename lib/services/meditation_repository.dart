@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import './firebase_service.dart';
 import '../models/meditation_models.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 class MeditationRepository {
   final FirebaseService _firebaseService = FirebaseService();

@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/professional_provider.dart';
 
 class ProfessionalScreen extends StatelessWidget {
+  const ProfessionalScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,3 +1,4 @@
+import "package:fake_cloud_firestore/fake_cloud_firestore.dart";
 import 'package:test/test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -6,7 +7,7 @@ import 'package:mindcare/services/analytics_service.dart';
 
 class MockFirebaseAnalytics extends Mock implements FirebaseAnalytics {}
 
-class MockFirebaseFirestore extends Mock {}
+class FakeFirebaseFirestore extends Mock {}
 
 class MockCollectionReference<T> extends Mock
     implements CollectionReference<T> {}
@@ -22,7 +23,7 @@ void main() {
   group('AnalyticsService', () {
     late AnalyticsService analyticsService;
     late MockFirebaseAnalytics mockFirebaseAnalytics;
-    late MockFirebaseFirestore mockFirebaseFirestore;
+    late FakeFirebaseFirestore mockFirebaseFirestore;
 
     setUpAll(() {
       registerFallbackValue(MockCollectionReference<Map<String, dynamic>>());
@@ -33,7 +34,7 @@ void main() {
 
     setUp(() {
       mockFirebaseAnalytics = MockFirebaseAnalytics();
-      mockFirebaseFirestore = MockFirebaseFirestore();
+      mockFirebaseFirestore = FakeFirebaseFirestore();
       analyticsService =
           AnalyticsService.test(mockFirebaseAnalytics, mockFirebaseFirestore);
     });

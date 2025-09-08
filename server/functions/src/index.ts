@@ -239,6 +239,9 @@ export const verifyProfessional = functions.https.onCall(async (data, context) =
   }
 });
 
+// Maintenance / seeding
+export { seedInitialData } from './maintenance/seed';
+
 // Función para sincronizar disponibilidad de profesionales
 export const syncProfessionalAvailability = functions.https.onCall(async (data, context) => {
   // Verificar autenticación
@@ -329,3 +332,10 @@ async function handleSubscriptionCancellation(subscription: any) {
   // Lógica para manejar cancelación de suscripción
   console.log('Suscripción cancelada:', subscription.id);
 }
+
+export { rateLimit } from './security/rateLimit';
+export { auditLog } from './security/auditLog';
+export { anonymize } from './analytics/anonymize';
+export { mfaAdmin } from './auth/mfaAdmin';
+export { stripeWebhook } from './stripe/webhooks';
+export { migrateSegments } from './maintenance/migrateSegments';

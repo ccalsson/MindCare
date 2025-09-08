@@ -38,6 +38,9 @@ flutter/
 .env.*
 google-services.json
 GoogleService-Info.plist
+server/keys/
+*.service-account.json
+*serviceAccount*.json
 
 # Firebase
 .firebase/
@@ -58,6 +61,7 @@ yarn-error.log*
 pids
 *.pid
 *.seed
+*.seed_secret.tmp
 *.pid.lock
 
 # Coverage directory used by tools like istanbul
@@ -111,5 +115,3 @@ jspm_packages/
 # Temporary folders
 tmp/
 temp/
-
-

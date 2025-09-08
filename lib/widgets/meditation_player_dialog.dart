@@ -9,10 +9,10 @@ class MeditationPlayerDialog extends StatelessWidget {
   final VoidCallback onDismiss;
 
   const MeditationPlayerDialog({
-    Key? key,
+    super.key,
     required this.session,
     required this.onDismiss,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +74,7 @@ class MeditationPlayerDialog extends StatelessWidget {
             // Barra de progreso
             LinearProgressIndicator(
               value: viewModel.currentProgress,
-              backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(
                 Theme.of(context).colorScheme.primary,
               ),

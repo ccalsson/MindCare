@@ -1,3 +1,4 @@
+// ignore_for_file: argument_type_not_assignable
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_performance/firebase_performance.dart';

@@ -4,12 +4,11 @@ import '../models/meditation_models.dart';
 import '../viewmodels/meditation_viewmodel.dart';
 import '../widgets/meditation_session_card.dart';
 import '../widgets/category_chip.dart';
-import '../widgets/meditation_player_dialog.dart';
 
 class MeditationScreen extends StatelessWidget {
   final Function onNavigateBack;
 
-  const MeditationScreen({Key? key, required this.onNavigateBack}) : super(key: key);
+  const MeditationScreen({super.key, required this.onNavigateBack});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +51,7 @@ class MeditationScreen extends StatelessWidget {
                         isSelected: viewModel.selectedCategory == category,
                         onTap: () => viewModel.selectCategory(category),
                       )
-                    ).toList(),
+                    ),
                   ],
                 ),
               ),

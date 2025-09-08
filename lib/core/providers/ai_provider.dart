@@ -11,7 +11,7 @@ enum AiProfile {
 
 class AiProvider extends ChangeNotifier {
   AiProfile _currentProfile = AiProfile.bienestar;
-  List<String> _conversationHistory = [];
+  final List<String> _conversationHistory = [];
   bool _isLoading = false;
   String? _lastError;
 
