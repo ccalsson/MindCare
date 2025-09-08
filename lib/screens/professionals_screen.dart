@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mindcare/services/supabase_repository.dart';
 import 'availability_screen.dart';
+import 'package:mindcare/services/supabase_service.dart';
 
 class ProfessionalsScreen extends StatefulWidget {
   const ProfessionalsScreen({super.key});
@@ -12,20 +13,23 @@ class ProfessionalsScreen extends StatefulWidget {
 class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
   final _repo = SupabaseRepository();
   late Future<List<Map<String, dynamic>>> _future;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    _future = _repo.listProfessionals();
+    _future = _ensureSupabaseAndLoad();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Profesionales')),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _future,
-        builder: (context, snapshot) {
+      body: _error != null
+          ? Center(child: Text('Error Supabase: $_error'))
+          : FutureBuilder<List<Map<String, dynamic>>>(
+            future: _future,
+            builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
@@ -66,6 +70,16 @@ class _ProfessionalsScreenState extends State<ProfessionalsScreen> {
         },
       ),
     );
+  Future<List<Map<String, dynamic>>> _ensureSupabaseAndLoad() async {
+    try {
+      if (!SupabaseService.isInitialized) {
+        await SupabaseService.init();
+      }
+      return await _repo.listProfessionals();
+    } catch (e) {
+      setState(() => _error = e.toString());
+      return [];
+    }
+  }
   }
 }
-

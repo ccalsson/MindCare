@@ -1,0 +1,780 @@
+.
+├── .aiexclude
+├── .DS_Store
+├── .env
+├── .env.sample
+├── .flutter-plugins-dependencies
+├── .fvm
+│   ├── flutter_sdk -> /Users/claudiocalsson/fvm/versions/stable
+│   ├── fvm_config.json
+│   ├── release
+│   ├── version
+│   └── versions
+│       └── stable -> /Users/claudiocalsson/fvm/versions/stable
+├── .fvmrc
+├── .github
+│   └── workflows
+│       ├── flutter-ci.yml
+│       └── security.yml
+├── .gitignore
+├── .metadata
+├── .seed_secret.tmp
+├── .vscode
+│   ├── launch.json
+│   └── settings.json
+├── analysis_options.yaml
+├── android
+│   ├── .gitignore
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── google-services.json
+│   │       └── main
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   ├── mindcare_android.iml
+│   └── settings.gradle.kts
+├── android_broken_20250907-200957
+│   ├── .gitignore
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   └── src
+│   │       ├── debug
+│   │       ├── main
+│   │       └── profile
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   ├── mindcare_android.iml
+│   └── settings.gradle.kts
+├── android_old
+│   ├── .gitignore
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   ├── google-services.json
+│   │   └── src
+│   │       ├── debug
+│   │       ├── main
+│   │       └── profile
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   ├── mindcare_android.iml
+│   └── settings.gradle.kts
+├── android.bak.1757300142
+│   ├── .gitignore
+│   ├── .kotlin
+│   │   └── sessions
+│   ├── app
+│   │   ├── build.gradle.kts
+│   │   ├── google-services.json
+│   │   └── src
+│   │       └── main
+│   ├── build.gradle.kts
+│   ├── gradle
+│   │   └── wrapper
+│   │       ├── gradle-wrapper.jar
+│   │       └── gradle-wrapper.properties
+│   ├── gradle.properties
+│   ├── gradlew
+│   ├── gradlew.bat
+│   ├── local.properties
+│   ├── mindcare_android.iml
+│   ├── settings.gradle
+│   ├── settings.gradle.bak
+│   ├── settings.gradle.kts
+│   └── settings.gradle.kts.bak
+├── app
+│   └── build.gradle.kts
+├── ARBOL.txt
+├── assets
+│   ├── audio
+│   │   └── placeholder.mp3
+│   ├── fonts
+│   │   ├── Inter-Bold.ttf
+│   │   ├── Inter-Medium.ttf
+│   │   ├── Inter-Regular.ttf
+│   │   └── Inter-SemiBold.ttf
+│   ├── icons
+│   │   └── app_icon.png
+│   └── images
+│       ├── placeholder.png
+│       └── splash.png
+├── deploy.sh
+├── docs
+│   └── README.md
+├── feature
+│   ├── .DS_Store
+│   ├── breathing
+│   │   └── src
+│   │       └── main
+│   └── meditation
+│       └── src
+│           └── main
+├── firebase_data
+├── firebase_setup.sh
+├── firebase.json
+├── firestore-debug.log
+├── firestore.indexes.json
+├── firestore.rules
+├── gradle
+│   ├── libs.versions.toml
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── HIPAA_READINESS.md
+├── ios
+│   ├── .gitignore
+│   ├── .symlinks
+│   │   └── plugins
+│   │       ├── audio_session -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/audio_session-0.2.2/
+│   │       ├── cloud_firestore -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/cloud_firestore-4.13.6/
+│   │       ├── cloud_functions -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/cloud_functions-4.7.6/
+│   │       ├── device_info_plus -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/device_info_plus-11.5.0/
+│   │       ├── firebase_analytics -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_analytics-10.10.7/
+│   │       ├── firebase_auth -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_auth-4.16.0/
+│   │       ├── firebase_core -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_core-2.32.0/
+│   │       ├── firebase_crashlytics -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_crashlytics-3.5.7/
+│   │       ├── firebase_performance -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_performance-0.9.4+7/
+│   │       ├── firebase_remote_config -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_remote_config-4.4.7/
+│   │       ├── firebase_storage -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/firebase_storage-11.6.5/
+│   │       ├── health -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/health-13.1.4/
+│   │       ├── just_audio -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/just_audio-0.10.5/
+│   │       ├── path_provider_foundation -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.2/
+│   │       ├── shared_preferences_foundation -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/shared_preferences_foundation-2.5.4/
+│   │       └── stripe_ios -> /Users/claudiocalsson/.pub-cache/hosted/pub.dev/stripe_ios-10.2.0/
+│   ├── Flutter
+│   │   ├── AppFrameworkInfo.plist
+│   │   ├── Debug.xcconfig
+│   │   ├── ephemeral
+│   │   │   ├── flutter_lldb_helper.py
+│   │   │   └── flutter_lldbinit
+│   │   ├── flutter_export_environment.sh
+│   │   ├── Generated.xcconfig
+│   │   └── Release.xcconfig
+│   ├── Podfile
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   ├── AppIcon.appiconset
+│   │   │   ├── LaunchBackground.imageset
+│   │   │   └── LaunchImage.imageset
+│   │   ├── Base.lproj
+│   │   │   ├── LaunchScreen.storyboard
+│   │   │   └── Main.storyboard
+│   │   ├── GeneratedPluginRegistrant.h
+│   │   ├── GeneratedPluginRegistrant.m
+│   │   ├── GoogleService-Info.plist
+│   │   ├── Info.plist
+│   │   └── Runner-Bridging-Header.h
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   ├── contents.xcworkspacedata
+│   │   │   └── xcshareddata
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   ├── Runner.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   ├── xcshareddata
+│   │   │   ├── IDEWorkspaceChecks.plist
+│   │   │   ├── swiftpm
+│   │   │   └── WorkspaceSettings.xcsettings
+│   │   └── xcuserdata
+│   │       └── claudiocalsson.xcuserdatad
+│   └── RunnerTests
+│       └── RunnerTests.swift
+├── legal
+│   └── privacy.md
+├── LEGAL_AR.md
+├── lib
+│   ├── .DS_Store
+│   ├── analytics
+│   │   └── metrics_sender.dart
+│   ├── auth
+│   │   └── mfa_flow.dart
+│   ├── config
+│   │   ├── firebase_config.dart
+│   │   ├── stripe_config.dart
+│   │   ├── web_optimizations_stub.dart
+│   │   ├── web_optimizations_web.dart
+│   │   └── web_optimizations.dart
+│   ├── core
+│   │   ├── ai
+│   │   │   └── ai_coach_service.dart
+│   │   ├── auth
+│   │   ├── billing
+│   │   │   ├── providers
+│   │   │   ├── screens
+│   │   │   └── stripe_service.dart
+│   │   ├── config
+│   │   │   ├── firebase_config.dart
+│   │   │   ├── remote_config_service.dart
+│   │   │   └── stripe_config.dart
+│   │   ├── data
+│   │   │   ├── models
+│   │   │   └── repository.dart
+│   │   ├── providers
+│   │   │   ├── ai_provider.dart
+│   │   │   ├── auth_provider.dart
+│   │   │   └── subscription_provider.dart
+│   │   ├── router
+│   │   │   └── app_router.dart
+│   │   └── widgets
+│   ├── exceptions
+│   │   └── recommendation_exception.dart
+│   ├── main.dart
+│   ├── main.dart.bak
+│   ├── models
+│   │   ├── activity_log.dart
+│   │   ├── appointment.dart
+│   │   ├── audio_resource.dart
+│   │   ├── meditation_models.dart
+│   │   ├── patient.dart
+│   │   ├── premium_content_model.dart
+│   │   ├── professional.dart
+│   │   ├── resource_model.dart
+│   │   ├── subscription_limits.dart
+│   │   ├── subscription_model.dart
+│   │   ├── subscription.dart
+│   │   └── virtual_session_model.dart
+│   ├── modules
+│   │   ├── bienestar
+│   │   ├── desarrollo_profesional
+│   │   ├── estudiantil
+│   │   ├── profesionales
+│   │   └── tda_tdh
+│   ├── providers
+│   │   ├── appointment_provider.dart
+│   │   ├── patient_provider.dart
+│   │   └── professional_provider.dart
+│   ├── screens
+│   │   ├── availability_screen.dart
+│   │   ├── home_screen.dart
+│   │   ├── login_screen.dart
+│   │   ├── meditation_screen.dart
+│   │   ├── patient_screen.dart
+│   │   ├── privacy_policy_screen.dart
+│   │   ├── professional_onboarding_screen.dart
+│   │   ├── professional_screen.dart
+│   │   ├── professionals_screen.dart
+│   │   ├── resources_screen.dart
+│   │   ├── subscription_screen.dart
+│   │   └── two_factor_setup_screen.dart
+│   ├── security
+│   │   ├── biometric_lock.dart
+│   │   ├── client_crypto.dart
+│   │   └── session_guard.dart
+│   ├── services
+│   │   ├── analytics_service.dart
+│   │   ├── cache_service.dart
+│   │   ├── chat_service.dart
+│   │   ├── firebase_service.dart
+│   │   ├── ianalytics_service.dart
+│   │   ├── idata_repository.dart
+│   │   ├── logging_service.dart
+│   │   ├── meditation_repository.dart
+│   │   ├── monitoring_service.dart
+│   │   ├── performance_monitoring.dart
+│   │   ├── premium_content_service.dart
+│   │   ├── recommendation_service.dart
+│   │   ├── resource_service.dart
+│   │   ├── stripe_service.dart
+│   │   ├── supabase_auth_service.dart
+│   │   ├── supabase_repository.dart
+│   │   ├── supabase_service.dart
+│   │   ├── usage_service.dart
+│   │   ├── virtual_session_service.dart
+│   │   └── wearable_service.dart
+│   ├── state
+│   │   └── app_state.dart
+│   ├── utils
+│   │   ├── context_provider.dart
+│   │   ├── error_handler.dart
+│   │   ├── memory_optimizer.dart
+│   │   └── retry_helper.dart
+│   ├── viewmodels
+│   │   └── meditation_viewmodel.dart
+│   └── widgets
+│       ├── category_chip.dart
+│       ├── loading_screen.dart
+│       ├── meditation_player_dialog.dart
+│       └── meditation_session_card.dart
+├── linux
+│   ├── .gitignore
+│   ├── CMakeLists.txt
+│   ├── flutter
+│   │   ├── CMakeLists.txt
+│   │   ├── ephemeral
+│   │   │   └── .plugin_symlinks
+│   │   ├── generated_plugin_registrant.cc
+│   │   ├── generated_plugin_registrant.h
+│   │   └── generated_plugins.cmake
+│   └── runner
+│       ├── CMakeLists.txt
+│       ├── main.cc
+│       ├── my_application.cc
+│       └── my_application.h
+├── macos
+│   ├── .gitignore
+│   ├── Flutter
+│   │   ├── ephemeral
+│   │   │   ├── flutter_export_environment.sh
+│   │   │   └── Flutter-Generated.xcconfig
+│   │   ├── Flutter-Debug.xcconfig
+│   │   ├── Flutter-Release.xcconfig
+│   │   └── GeneratedPluginRegistrant.swift
+│   ├── Podfile
+│   ├── Podfile.lock
+│   ├── Runner
+│   │   ├── AppDelegate.swift
+│   │   ├── Assets.xcassets
+│   │   │   └── AppIcon.appiconset
+│   │   ├── Base.lproj
+│   │   │   └── MainMenu.xib
+│   │   ├── Configs
+│   │   │   ├── AppInfo.xcconfig
+│   │   │   ├── Debug.xcconfig
+│   │   │   ├── Release.xcconfig
+│   │   │   └── Warnings.xcconfig
+│   │   ├── DebugProfile.entitlements
+│   │   ├── GoogleService-Info.plist
+│   │   ├── Info.plist
+│   │   ├── MainFlutterWindow.swift
+│   │   └── Release.entitlements
+│   ├── Runner.xcodeproj
+│   │   ├── project.pbxproj
+│   │   ├── project.xcworkspace
+│   │   │   └── xcshareddata
+│   │   └── xcshareddata
+│   │       └── xcschemes
+│   ├── Runner.xcworkspace
+│   │   ├── contents.xcworkspacedata
+│   │   └── xcshareddata
+│   │       ├── IDEWorkspaceChecks.plist
+│   │       └── swiftpm
+│   └── RunnerTests
+│       └── RunnerTests.swift
+├── mindcare.iml
+├── pubspec.lock
+├── pubspec.yaml
+├── pubspec.yaml.bak
+├── README_SECURITY.md
+├── README.md
+├── SECURITY_TESTING.md
+├── server
+│   ├── functions
+│   │   ├── .firebaserc
+│   │   ├── lib
+│   │   │   ├── analytics
+│   │   │   ├── auth
+│   │   │   ├── index_seed.js
+│   │   │   ├── index_seed.js.map
+│   │   │   ├── index.js
+│   │   │   ├── index.js.map
+│   │   │   ├── maintenance
+│   │   │   ├── security
+│   │   │   └── stripe
+│   │   ├── node_modules
+│   │   │   ├── .bin
+│   │   │   ├── .package-lock.json
+│   │   │   ├── @babel
+│   │   │   ├── @cspotcode
+│   │   │   ├── @fastify
+│   │   │   ├── @firebase
+│   │   │   ├── @google-cloud
+│   │   │   ├── @grpc
+│   │   │   ├── @jridgewell
+│   │   │   ├── @jsdoc
+│   │   │   ├── @protobufjs
+│   │   │   ├── @tootallnate
+│   │   │   ├── @tsconfig
+│   │   │   ├── @types
+│   │   │   ├── abort-controller
+│   │   │   ├── accepts
+│   │   │   ├── acorn
+│   │   │   ├── acorn-jsx
+│   │   │   ├── acorn-walk
+│   │   │   ├── agent-base
+│   │   │   ├── ansi-colors
+│   │   │   ├── ansi-regex
+│   │   │   ├── ansi-styles
+│   │   │   ├── anymatch
+│   │   │   ├── arg
+│   │   │   ├── argparse
+│   │   │   ├── array-flatten
+│   │   │   ├── arrify
+│   │   │   ├── async-retry
+│   │   │   ├── asynckit
+│   │   │   ├── balanced-match
+│   │   │   ├── base64-js
+│   │   │   ├── bignumber.js
+│   │   │   ├── binary-extensions
+│   │   │   ├── bluebird
+│   │   │   ├── body-parser
+│   │   │   ├── brace-expansion
+│   │   │   ├── braces
+│   │   │   ├── browser-stdout
+│   │   │   ├── buffer-equal-constant-time
+│   │   │   ├── bytes
+│   │   │   ├── call-bind-apply-helpers
+│   │   │   ├── call-bound
+│   │   │   ├── camelcase
+│   │   │   ├── catharsis
+│   │   │   ├── chalk
+│   │   │   ├── chokidar
+│   │   │   ├── cliui
+│   │   │   ├── color-convert
+│   │   │   ├── color-name
+│   │   │   ├── combined-stream
+│   │   │   ├── compressible
+│   │   │   ├── content-disposition
+│   │   │   ├── content-type
+│   │   │   ├── cookie
+│   │   │   ├── cookie-signature
+│   │   │   ├── cors
+│   │   │   ├── create-require
+│   │   │   ├── debug
+│   │   │   ├── decamelize
+│   │   │   ├── deep-is
+│   │   │   ├── delayed-stream
+│   │   │   ├── depd
+│   │   │   ├── destroy
+│   │   │   ├── diff
+│   │   │   ├── dot-prop
+│   │   │   ├── dunder-proto
+│   │   │   ├── duplexify
+│   │   │   ├── ecdsa-sig-formatter
+│   │   │   ├── ee-first
+│   │   │   ├── emoji-regex
+│   │   │   ├── encodeurl
+│   │   │   ├── end-of-stream
+│   │   │   ├── ent
+│   │   │   ├── entities
+│   │   │   ├── es-define-property
+│   │   │   ├── es-errors
+│   │   │   ├── es-object-atoms
+│   │   │   ├── es-set-tostringtag
+│   │   │   ├── escalade
+│   │   │   ├── escape-html
+│   │   │   ├── escape-string-regexp
+│   │   │   ├── escodegen
+│   │   │   ├── eslint-visitor-keys
+│   │   │   ├── espree
+│   │   │   ├── esprima
+│   │   │   ├── estraverse
+│   │   │   ├── esutils
+│   │   │   ├── etag
+│   │   │   ├── event-target-shim
+│   │   │   ├── eventid
+│   │   │   ├── express
+│   │   │   ├── extend
+│   │   │   ├── fast-deep-equal
+│   │   │   ├── fast-levenshtein
+│   │   │   ├── fast-text-encoding
+│   │   │   ├── fast-xml-parser
+│   │   │   ├── faye-websocket
+│   │   │   ├── fill-range
+│   │   │   ├── finalhandler
+│   │   │   ├── find-up
+│   │   │   ├── firebase
+│   │   │   ├── firebase-admin
+│   │   │   ├── firebase-functions
+│   │   │   ├── flat
+│   │   │   ├── form-data
+│   │   │   ├── forwarded
+│   │   │   ├── fresh
+│   │   │   ├── fs.realpath
+│   │   │   ├── function-bind
+│   │   │   ├── functional-red-black-tree
+│   │   │   ├── gaxios
+│   │   │   ├── gcp-metadata
+│   │   │   ├── get-caller-file
+│   │   │   ├── get-intrinsic
+│   │   │   ├── get-proto
+│   │   │   ├── glob
+│   │   │   ├── glob-parent
+│   │   │   ├── google-auth-library
+│   │   │   ├── google-gax
+│   │   │   ├── google-p12-pem
+│   │   │   ├── gopd
+│   │   │   ├── graceful-fs
+│   │   │   ├── gtoken
+│   │   │   ├── has-flag
+│   │   │   ├── has-symbols
+│   │   │   ├── has-tostringtag
+│   │   │   ├── hasown
+│   │   │   ├── he
+│   │   │   ├── http-errors
+│   │   │   ├── http-parser-js
+│   │   │   ├── http-proxy-agent
+│   │   │   ├── https-proxy-agent
+│   │   │   ├── iconv-lite
+│   │   │   ├── idb
+│   │   │   ├── inflight
+│   │   │   ├── inherits
+│   │   │   ├── ipaddr.js
+│   │   │   ├── is-binary-path
+│   │   │   ├── is-extglob
+│   │   │   ├── is-fullwidth-code-point
+│   │   │   ├── is-glob
+│   │   │   ├── is-number
+│   │   │   ├── is-obj
+│   │   │   ├── is-plain-obj
+│   │   │   ├── is-regex
+│   │   │   ├── is-stream
+│   │   │   ├── is-stream-ended
+│   │   │   ├── is-unicode-supported
+│   │   │   ├── jose
+│   │   │   ├── js-yaml
+│   │   │   ├── js2xmlparser
+│   │   │   ├── jsdoc
+│   │   │   ├── json-bigint
+│   │   │   ├── jsonwebtoken
+│   │   │   ├── jwa
+│   │   │   ├── jwks-rsa
+│   │   │   ├── jws
+│   │   │   ├── klaw
+│   │   │   ├── levn
+│   │   │   ├── limiter
+│   │   │   ├── linkify-it
+│   │   │   ├── locate-path
+│   │   │   ├── lodash
+│   │   │   ├── lodash.camelcase
+│   │   │   ├── lodash.clonedeep
+│   │   │   ├── lodash.includes
+│   │   │   ├── lodash.isboolean
+│   │   │   ├── lodash.isinteger
+│   │   │   ├── lodash.isnumber
+│   │   │   ├── lodash.isplainobject
+│   │   │   ├── lodash.isstring
+│   │   │   ├── lodash.once
+│   │   │   ├── log-symbols
+│   │   │   ├── long
+│   │   │   ├── lru-cache
+│   │   │   ├── lru-memoizer
+│   │   │   ├── make-error
+│   │   │   ├── markdown-it
+│   │   │   ├── markdown-it-anchor
+│   │   │   ├── marked
+│   │   │   ├── math-intrinsics
+│   │   │   ├── mdurl
+│   │   │   ├── media-typer
+│   │   │   ├── merge-descriptors
+│   │   │   ├── methods
+│   │   │   ├── mime
+│   │   │   ├── mime-db
+│   │   │   ├── mime-types
+│   │   │   ├── minimatch
+│   │   │   ├── minimist
+│   │   │   ├── mkdirp
+│   │   │   ├── mocha
+│   │   │   ├── ms
+│   │   │   ├── negotiator
+│   │   │   ├── node-fetch
+│   │   │   ├── node-forge
+│   │   │   ├── normalize-path
+│   │   │   ├── object-assign
+│   │   │   ├── object-hash
+│   │   │   ├── object-inspect
+│   │   │   ├── on-finished
+│   │   │   ├── once
+│   │   │   ├── optionator
+│   │   │   ├── p-limit
+│   │   │   ├── p-locate
+│   │   │   ├── parseurl
+│   │   │   ├── path-exists
+│   │   │   ├── path-to-regexp
+│   │   │   ├── pg
+│   │   │   ├── pg-cloudflare
+│   │   │   ├── pg-connection-string
+│   │   │   ├── pg-int8
+│   │   │   ├── pg-pool
+│   │   │   ├── pg-protocol
+│   │   │   ├── pg-types
+│   │   │   ├── pgpass
+│   │   │   ├── picomatch
+│   │   │   ├── postgres-array
+│   │   │   ├── postgres-bytea
+│   │   │   ├── postgres-date
+│   │   │   ├── postgres-interval
+│   │   │   ├── prelude-ls
+│   │   │   ├── proto3-json-serializer
+│   │   │   ├── protobufjs
+│   │   │   ├── protobufjs-cli
+│   │   │   ├── proxy-addr
+│   │   │   ├── pump
+│   │   │   ├── pumpify
+│   │   │   ├── punycode
+│   │   │   ├── punycode.js
+│   │   │   ├── qs
+│   │   │   ├── randombytes
+│   │   │   ├── range-parser
+│   │   │   ├── rate-limiter-flexible
+│   │   │   ├── raw-body
+│   │   │   ├── readable-stream
+│   │   │   ├── readdirp
+│   │   │   ├── require-directory
+│   │   │   ├── requizzle
+│   │   │   ├── retry
+│   │   │   ├── retry-request
+│   │   │   ├── safe-buffer
+│   │   │   ├── safe-regex-test
+│   │   │   ├── safer-buffer
+│   │   │   ├── semver
+│   │   │   ├── send
+│   │   │   ├── serialize-javascript
+│   │   │   ├── serve-static
+│   │   │   ├── setprototypeof
+│   │   │   ├── side-channel
+│   │   │   ├── side-channel-list
+│   │   │   ├── side-channel-map
+│   │   │   ├── side-channel-weakmap
+│   │   │   ├── source-map
+│   │   │   ├── split2
+│   │   │   ├── statuses
+│   │   │   ├── stream-events
+│   │   │   ├── stream-shift
+│   │   │   ├── string_decoder
+│   │   │   ├── string-width
+│   │   │   ├── strip-ansi
+│   │   │   ├── strip-json-comments
+│   │   │   ├── stripe
+│   │   │   ├── strnum
+│   │   │   ├── stubs
+│   │   │   ├── supports-color
+│   │   │   ├── teeny-request
+│   │   │   ├── text-decoding
+│   │   │   ├── tmp
+│   │   │   ├── to-regex-range
+│   │   │   ├── toidentifier
+│   │   │   ├── tr46
+│   │   │   ├── ts-node
+│   │   │   ├── tslib
+│   │   │   ├── type-check
+│   │   │   ├── type-is
+│   │   │   ├── typescript
+│   │   │   ├── uc.micro
+│   │   │   ├── uglify-js
+│   │   │   ├── underscore
+│   │   │   ├── undici
+│   │   │   ├── undici-types
+│   │   │   ├── unpipe
+│   │   │   ├── util-deprecate
+│   │   │   ├── utils-merge
+│   │   │   ├── uuid
+│   │   │   ├── v8-compile-cache-lib
+│   │   │   ├── vary
+│   │   │   ├── webidl-conversions
+│   │   │   ├── websocket-driver
+│   │   │   ├── websocket-extensions
+│   │   │   ├── whatwg-url
+│   │   │   ├── word-wrap
+│   │   │   ├── workerpool
+│   │   │   ├── wrap-ansi
+│   │   │   ├── wrappy
+│   │   │   ├── xmlcreate
+│   │   │   ├── xtend
+│   │   │   ├── y18n
+│   │   │   ├── yallist
+│   │   │   ├── yargs
+│   │   │   ├── yargs-parser
+│   │   │   ├── yargs-unparser
+│   │   │   ├── yn
+│   │   │   ├── yocto-queue
+│   │   │   └── zod
+│   │   ├── package-lock.json
+│   │   ├── package.json
+│   │   ├── src
+│   │   │   ├── analytics
+│   │   │   ├── auth
+│   │   │   ├── index_seed.ts
+│   │   │   ├── index.ts
+│   │   │   ├── maintenance
+│   │   │   ├── security
+│   │   │   └── stripe
+│   │   ├── test
+│   │   │   └── firestore.rules.test.ts
+│   │   ├── tsconfig.json
+│   │   └── tsconfig.seed.json
+│   ├── index.js
+│   ├── keys
+│   │   └── mindcare-sa.json
+│   ├── seed_firestore.mjs
+│   ├── sql
+│   │   ├── apply_schema.mjs
+│   │   ├── apply_seed_bookings.mjs
+│   │   ├── apply_seed_demo.mjs
+│   │   ├── apply_seed.mjs
+│   │   ├── README.md
+│   │   ├── supabase_schema.sql
+│   │   ├── supabase_seed_demo.sql
+│   │   └── supabase_seed.sql
+│   └── upload_storage.mjs
+├── setup_emulators.sh
+├── shared
+│   └── src
+│       └── commonMain
+│           └── kotlin
+├── storage.rules
+├── test
+│   ├── services
+│   └── widget_test.dart
+├── test_disabled
+│   └── analytics_service_test.dart
+├── tools
+│   └── seed_and_assets.sh
+├── web
+│   ├── favicon.png
+│   ├── icons
+│   │   ├── Icon-192.png
+│   │   ├── Icon-512.png
+│   │   ├── Icon-maskable-192.png
+│   │   └── Icon-maskable-512.png
+│   ├── index.html
+│   └── manifest.json
+└── windows
+    ├── .gitignore
+    ├── CMakeLists.txt
+    ├── flutter
+    │   ├── CMakeLists.txt
+    │   ├── ephemeral
+    │   │   └── .plugin_symlinks
+    │   ├── generated_plugin_registrant.cc
+    │   ├── generated_plugin_registrant.h
+    │   └── generated_plugins.cmake
+    └── runner
+        ├── CMakeLists.txt
+        ├── flutter_window.cpp
+        ├── flutter_window.h
+        ├── main.cpp
+        ├── resource.h
+        ├── resources
+        │   └── app_icon.ico
+        ├── runner.exe.manifest
+        ├── Runner.rc
+        ├── utils.cpp
+        ├── utils.h
+        ├── win32_window.cpp
+        └── win32_window.h
+
+488 directories, 290 files

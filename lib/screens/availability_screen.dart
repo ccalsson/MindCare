@@ -93,7 +93,6 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
       ),
     );
   }
-}
 
   Future<bool> _promptLogin(BuildContext context) async {
     final email = TextEditingController();
@@ -143,3 +142,4 @@ class _AvailabilityScreenState extends State<AvailabilityScreen> {
     );
     return ok == true;
   }
+}

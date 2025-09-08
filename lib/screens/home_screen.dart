@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:mindcare/screens/professionals_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   Future<void> _logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
-    if (context.mounted) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Sesión cerrada')));
-    }
+    if (Firebase.apps.isEmpty) return;
+    try {
+      await FirebaseAuth.instance.signOut();
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Sesión cerrada')));
+      }
+    } catch (_) {}
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
+    final user = Firebase.apps.isNotEmpty ? FirebaseAuth.instance.currentUser : null;
     return Scaffold(
       appBar: AppBar(
         title: const Text('MindCare'),
-        actions: [
-          IconButton(
-            onPressed: () => _logout(context),
-            icon: const Icon(Icons.logout),
-            tooltip: 'Salir',
-          ),
-        ],
+        actions: Firebase.apps.isNotEmpty
+            ? [
+                IconButton(
+                  onPressed: () => _logout(context),
+                  icon: const Icon(Icons.logout),
+                  tooltip: 'Salir',
+                ),
+              ]
+            : null,
       ),
       body: Center(
         child: Column(
