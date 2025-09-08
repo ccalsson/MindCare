@@ -101,12 +101,16 @@ class PaywallScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () => billingProvider.setPlan(plan),
       child: Card(
-        color: isSelected ? Colors.blue.shade50 : null,
+        color: isSelected
+            ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+            : null,
         elevation: isSelected ? 4 : 2,
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(
-                color: isSelected ? Colors.blue : Colors.grey.shade300,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : Colors.grey.shade300,
                 width: isSelected ? 2 : 1),
             borderRadius: BorderRadius.circular(12),
           ),
@@ -119,13 +123,17 @@ class PaywallScreen extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.blue : Colors.black87)),
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.black87)),
                 const SizedBox(height: 8),
                 Text('$currency${price.toStringAsFixed(0)}',
                     style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        color: isSelected ? Colors.blue : Colors.black87)),
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : Colors.black87)),
                 const SizedBox(height: 4),
                 Text(billingProvider.selectedBilling == 'monthly' ? '/mes' : '/año',
                     style:
@@ -160,7 +168,8 @@ class PaywallScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 2.0),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   Icon(Icons.check_circle,
-                      size: 16, color: Colors.green.shade600),
+                      size: 16,
+                      color: Theme.of(context).colorScheme.secondary),
                   const SizedBox(width: 4),
                   Text(feature, style: const TextStyle(fontSize: 10)),
                 ]),
@@ -214,34 +223,45 @@ class PaywallScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           border: Border.all(
-              color: isSelected ? Colors.blue : Colors.grey.shade300,
+              color: isSelected
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.grey.shade300,
               width: isSelected ? 2 : 1),
           borderRadius: BorderRadius.circular(8),
-          color: isSelected ? Colors.blue.shade50 : null,
+          color: isSelected
+              ? Theme.of(context).colorScheme.primary.withOpacity(0.1)
+              : null,
         ),
         child: Column(
           children: [
             Text(label,
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.blue : Colors.black87)),
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.black87)),
             const SizedBox(height: 8),
             Text('$currency${price.toStringAsFixed(0)}',
                 style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: isSelected ? Colors.blue : Colors.black87)),
+                    color: isSelected
+                        ? Theme.of(context).colorScheme.primary
+                        : Colors.black87)),
             if (isDiscount) ...[
               const SizedBox(height: 4),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(
-                    color: Colors.green.shade100,
+                    color: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.2),
                     borderRadius: BorderRadius.circular(12)),
                 child: Text('10% descuento',
                     style: TextStyle(
                         fontSize: 10,
-                        color: Colors.green.shade700,
+                        color: Theme.of(context).colorScheme.secondary,
                         fontWeight: FontWeight.bold)),
               ),
             ],
@@ -258,14 +278,14 @@ class PaywallScreen extends StatelessWidget {
       onPressed: () async {
         await billingProvider.subscribe();
         scaffoldMessenger.showSnackBar(
-          const SnackBar(
-              content: Text('Flujo de suscripción iniciado.'),
-              backgroundColor: Colors.green),
+          SnackBar(
+              content: const Text('Flujo de suscripción iniciado.'),
+              backgroundColor: Theme.of(context).colorScheme.secondary),
         );
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.symmetric(vertical: 16),
-        backgroundColor: Colors.blue,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),

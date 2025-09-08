@@ -37,9 +37,9 @@ class SubscriptionScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           if (period == BillingPeriod.yearly)
-            const Card(
-              color: Colors.green,
-              child: Padding(
+            Card(
+              color: Theme.of(context).colorScheme.secondary,
+              child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   '¡Ahorra 10% con el plan anual!',
@@ -159,7 +159,8 @@ class SubscriptionScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4),
                 child: Row(
                   children: [
-                    const Icon(Icons.check_circle, color: Colors.green),
+                    Icon(Icons.check_circle,
+                        color: Theme.of(context).colorScheme.secondary),
                     const SizedBox(width: 8),
                     Text(feature),
                   ],
@@ -265,7 +266,7 @@ class SubscriptionScreen extends StatelessWidget {
         scaffoldMessenger.showSnackBar(
           const SnackBar(
             content: Text('¡Suscripción activada con éxito!'),
-            backgroundColor: Colors.green,
+            backgroundColor: Theme.of(context).colorScheme.secondary,
           ),
         );
       }
