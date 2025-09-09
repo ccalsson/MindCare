@@ -8,10 +8,10 @@ import 'package:mindcare/screens/professionals/role_guard_screen.dart';
 import 'package:mindcare/screens/my_bookings_screen.dart';
 import 'package:mindcare/widgets/module_card.dart';
 import 'package:mindcare/providers/membership_provider.dart';
-import 'package:mindcare/modules/ansiedad/ansiedad_screen.dart';
-import 'package:mindcare/modules/estudiantil/estudiante_screen.dart';
-import 'package:mindcare/modules/tda_tdh/tda_tdh_screen.dart';
-import 'package:mindcare/modules/desarrollo_profesional/desarrollo_personal_screen.dart';
+import 'package:mindcare/modules/ansiedad/screens/overview_screen.dart';
+import 'package:mindcare/modules/estudiantil/screens/overview_screen.dart';
+import 'package:mindcare/modules/tda_tdh/screens/overview_screen.dart';
+import 'package:mindcare/modules/desarrollo_profesional/screens/overview_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -148,28 +148,28 @@ class HomeScreen extends StatelessWidget {
                               icon: Icons.self_improvement,
                               color: const Color(0xFF2E86E6),
                               locked: !isPremium,
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AnsiedadScreen())),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const AnxietyOverviewScreen())),
                             ),
                             ModuleCard(
                               title: 'Estudiante',
                               icon: Icons.school,
                               color: const Color(0xFF25D366),
                               locked: !isPremium,
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const EstudianteScreen())),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StudentOverviewScreen())),
                             ),
                             ModuleCard(
                               title: 'TDA/TDH',
                               icon: Icons.bolt,
                               color: Colors.amber.shade700,
                               locked: !isPremium,
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TdaTdhScreen())),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const TdaTdhOverviewScreen())),
                             ),
                             ModuleCard(
                               title: 'Desarrollo Personal',
                               icon: Icons.psychology,
                               color: Colors.purple,
                               locked: !isPremium,
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const DesarrolloPersonalScreen())),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PersonalDevOverviewScreen())),
                             ),
                             ModuleCard(
                               title: 'Profesionales',

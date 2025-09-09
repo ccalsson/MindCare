@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../providers/role_provider.dart';
-import '../professionals_screen.dart' as legacy_dir; // fallback
 import 'user/directory_screen.dart';
 import 'pro/dashboard_screen.dart';
 
@@ -80,4 +79,3 @@ class RoleChooserDialog extends StatelessWidget {
     );
   }
 }
-

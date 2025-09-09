@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/professionals_provider.dart';
-import '../../../widgets/module_card.dart';
+import '../../../widgets/professional_card.dart';
 import '../../../models/professional.dart';
 import '../role_guard_screen.dart';
 import '../../../constants/app_styles.dart';
@@ -72,14 +72,20 @@ class _ProfessionalDirectoryScreenState extends State<ProfessionalDirectoryScree
                           crossAxisCount: cross,
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
-                          childAspectRatio: 1.1,
+                          childAspectRatio: 1.2,
                         ),
                         itemCount: filtered.length,
-                        itemBuilder: (context, i) => _ProCard(
-                          pro: filtered[i],
-                          onView: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProfessionalDetailScreen(proId: filtered[i].proId))),
-                          onBook: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProfessionalDetailScreen(proId: filtered[i].proId))),
-                        ),
+                        itemBuilder: (context, i) {
+                          final p = filtered[i];
+                          return ProfessionalCard(
+                            name: p.fullName,
+                            subtitle: p.specialties.join(' · '),
+                            rating: p.rating,
+                            avatarUrl: p.avatarUrl,
+                            onView: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProfessionalDetailScreen(proId: p.proId))),
+                            onBook: () => Navigator.push(context, MaterialPageRoute(builder: (_) => ProfessionalDetailScreen(proId: p.proId))),
+                          );
+                        },
                       );
                     },
                   ),
@@ -144,20 +150,4 @@ class _ProfessionalDirectoryScreenState extends State<ProfessionalDirectoryScree
   }
 }
 
-class _ProCard extends StatelessWidget {
-  final Professional pro;
-  final VoidCallback onView;
-  final VoidCallback onBook;
-  const _ProCard({required this.pro, required this.onView, required this.onBook});
-
-  @override
-  Widget build(BuildContext context) {
-    return ModuleCard(
-      title: pro.fullName,
-      icon: Icons.person,
-      color: AppColors.blue,
-      onTap: onView,
-    );
-  }
-}
-
+// ProfessionalCard now used instead of ModuleCard placeholder

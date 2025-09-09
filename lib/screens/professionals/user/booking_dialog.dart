@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../services/availability_service.dart';
 import '../../../services/appointment_service.dart';
+import '../../../services/stripe_service.dart';
 
 class BookingDialog extends StatefulWidget {
   final String proId;
@@ -16,6 +17,7 @@ class _BookingDialogState extends State<BookingDialog> {
   DateTime? _selected;
   bool _loading = true;
   List<DateTime> _options = const [];
+  List<DateTime> _exceptions = const [];
 
   @override
   void initState() {
@@ -24,14 +26,33 @@ class _BookingDialogState extends State<BookingDialog> {
   }
 
   Future<void> _load() async {
-    // TODO: Replace with real weekly slots -> expand to concrete DateTimes
+    final slots = await _availability.getWeekly(widget.proId);
+    _exceptions = await _availability.getExceptions(widget.proId);
     final now = DateTime.now();
+    final List<DateTime> opts = [];
+    // Generate options for next 14 days based on weekly slots
+    for (int day = 0; day < 14; day++) {
+      final d = DateTime(now.year, now.month, now.day).add(Duration(days: day));
+      final dow = d.weekday; // 1=Mon..7=Sun
+      final isException = _exceptions.any((e) => e.year == d.year && e.month == d.month && e.day == d.day);
+      if (isException) continue;
+      for (final s in slots.where((s) => s.dayOfWeek == dow)) {
+        final partsStart = s.startTime.split(':');
+        final partsEnd = s.endTime.split(':');
+        if (partsStart.length == 2 && partsEnd.length == 2) {
+          final start = DateTime(d.year, d.month, d.day, int.parse(partsStart[0]), int.parse(partsStart[1]));
+          final end = DateTime(d.year, d.month, d.day, int.parse(partsEnd[0]), int.parse(partsEnd[1]));
+          // break in 50-min slots
+          var cur = start;
+          while (cur.isBefore(end)) {
+            if (cur.isAfter(now)) opts.add(cur);
+            cur = cur.add(const Duration(minutes: 50));
+          }
+        }
+      }
+    }
     setState(() {
-      _options = [
-        DateTime(now.year, now.month, now.day + 1, 10),
-        DateTime(now.year, now.month, now.day + 1, 12),
-        DateTime(now.year, now.month, now.day + 2, 14),
-      ];
+      _options = opts.take(24).toList();
       _loading = false;
     });
   }
@@ -80,7 +101,8 @@ class _BookingDialogState extends State<BookingDialog> {
                           : () async {
                               final start = _selected!;
                               final end = start.add(const Duration(minutes: 50));
-                              // TODO: Stripe payment before create when required
+                              final ok = await StripeService.maybePay(amountCents: 10000, currency: 'usd', requirePayment: false);
+                              if (!ok) return;
                               await _appointments.create(widget.proId, 'me', start, end);
                               if (!mounted) return;
                               Navigator.pop(context);
@@ -98,4 +120,3 @@ class _BookingDialogState extends State<BookingDialog> {
     );
   }
 }
-

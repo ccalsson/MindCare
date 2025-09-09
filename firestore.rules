@@ -23,9 +23,62 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Professionals: public read; write only by owner (users/{uid}.role == professional) or admin
     match /professionals/{pid} {
       allow read: if true;
-      allow write: if hasRole('admin');
+      allow create, update, delete: if (isSignedIn() && (
+        hasRole('admin') ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && (
+          // On create, userId must match caller; on update, resource.data.userId must match caller
+          (request.method == 'create' && request.resource.data.userId == request.auth.uid) ||
+          (request.method != 'create' && resource.data.userId == request.auth.uid)
+        ))
+      ));
+    }
+
+    // Availability by proId: public read; write by professional owner or admin
+    match /availability/{proId} {
+      allow read: if true;
+      allow write: if isSignedIn() && (
+        hasRole('admin') ||
+        // Check owner via professionals/{proId}.userId
+        (get(/databases/$(database)/documents/professionals/$(proId)).data.userId == request.auth.uid)
+      );
+    }
+
+    // Appointments: visible for userId and pro owner; create by user or pro; updates according to role
+    match /appointments/{aid} {
+      allow read: if isSignedIn() && (
+        resource.data.userId == request.auth.uid ||
+        get(/databases/$(database)/documents/professionals/$(resource.data.proId)).data.userId == request.auth.uid ||
+        hasRole('admin')
+      );
+
+      allow create: if isSignedIn() && (
+        // user creates for self
+        request.resource.data.userId == request.auth.uid ||
+        // pro creates for patient
+        get(/databases/$(database)/documents/professionals/$(request.resource.data.proId)).data.userId == request.auth.uid ||
+        hasRole('admin')
+      );
+
+      allow update: if isSignedIn() && (
+        // user can update own appointment limited fields
+        (resource.data.userId == request.auth.uid && request.resource.data.diff(resource.data).changedKeys().hasOnly(['status','startsAt','endsAt','notes'])) ||
+        // pro can update appointment limited fields
+        (get(/databases/$(database)/documents/professionals/$(resource.data.proId)).data.userId == request.auth.uid && request.resource.data.diff(resource.data).changedKeys().hasOnly(['status','startsAt','endsAt','notes'])) ||
+        hasRole('admin')
+      );
+
+      allow delete: if hasRole('admin');
+    }
+
+    // Patient records: only professional owner can access
+    match /patient_records/{rid} {
+      allow read, write: if isSignedIn() && (
+        get(/databases/$(database)/documents/professionals/$(resource.data.proId)).data.userId == request.auth.uid ||
+        hasRole('admin')
+      );
     }
 
     match /analytics/{docId} {

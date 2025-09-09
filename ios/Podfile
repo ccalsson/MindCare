@@ -1,6 +1,11 @@
-# Define a global platform for your project (required for recent Firebase/Apple Sign In)
+# Fuerza CDN y shallow clone para acelerar clones de pods (como BoringSSL-GRPC)
+source 'https://cdn.cocoapods.org'
+ENV['COCOAPODS_DISABLE_STATS'] = 'true'
+ENV['COCOAPODS_GIT_CLONE_DEPTH'] = '1'  # <— CLAVE: clona con --depth=1
+
 platform :ios, '16.0'
 use_frameworks! :linkage => :static
+
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'

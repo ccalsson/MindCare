@@ -10,6 +10,9 @@ import 'package:mindcare/screens/home_screen.dart';
 import 'package:mindcare/services/supabase_service.dart';
 import 'package:provider/provider.dart';
 import 'providers/membership_provider.dart';
+import 'providers/role_provider.dart';
+import 'providers/professionals_provider.dart';
+import 'providers/appointments_provider.dart';
 import 'package:mindcare/screens/welcome_screen.dart';
 
 Future<void> main() async {
@@ -67,6 +70,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => MembershipProvider()),
+        ChangeNotifierProvider(create: (_) => RoleProvider()),
+        ChangeNotifierProvider(create: (_) => ProfessionalsProvider()),
+        ChangeNotifierProvider(create: (_) => AppointmentsProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
