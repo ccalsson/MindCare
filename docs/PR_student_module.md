@@ -23,8 +23,8 @@ Este PR agrega el nuevo módulo Estudiante con páginas Home, Recursos, Rutinas 
 - Animaciones suaves (200–300ms), sin dependencias nuevas.
 
 ## Consideraciones
-- Coexisten vistas legacy en `lib/modules/estudiantil/*`. Siguiente paso sugerido: unificar en `features/student` y retirar legacy.
-- La app no usa `MaterialApp.router`; las páginas Estudiante navegan con `Navigator` para compatibilidad.
+- Coexisten vistas legacy en `lib/modules/estudiantil/*`. Se unifica navegación principal apuntando a `StudentHomePage` (ruta `/estudiantil` ahora abre el módulo nuevo). Pendiente retirar legacy o migrar contenido.
+- La app no usa `MaterialApp.router`; las páginas Estudiante navegan con `Navigator` para compatibilidad, además de rutas registradas.
 
 ## Pasos de prueba
 1. Abrir la app y entrar a Home.
@@ -33,4 +33,3 @@ Este PR agrega el nuevo módulo Estudiante con páginas Home, Recursos, Rutinas 
 4. “Te puede ayudar ahora”: Respirar/Música/Pomodoro/Checklist.
 5. Accesos: entrar a Recursos, Rutinas, Metas y probar interacciones.
 6. En Chat, enviar mensaje con “estudio/foco/examen” → aparece snackbar con acción “Abrir”.
-

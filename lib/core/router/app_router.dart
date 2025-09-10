@@ -5,6 +5,7 @@ import '../../features/addictions/ui/screening_runner_screen.dart';
 import '../../features/addictions/ui/result_and_plan_screen.dart';
 import '../../features/addictions/ui/daily_checkin_screen.dart';
 import '../../features/addictions/ui/exercises_hub_screen.dart';
+import '../../features/student/student_home_page.dart';
 import '../../features/addictions/ui/progress_screen.dart';
 import '../../features/addictions/ui/help_now_sheet.dart';
 import '../../features/addictions/models/screening_result.dart';
@@ -147,7 +148,7 @@ class AppRouter {
           ),
           GoRoute(
             path: estudiantil,
-            builder: (context, state) => const EstudiantilScreen(),
+            builder: (context, state) => const StudentHomePage(),
           ),
           GoRoute(
             path: desarrolloProfesional,
