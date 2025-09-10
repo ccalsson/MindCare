@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:mindcare/ui/chat/rooms_list_page.dart';
+import 'package:mindcare/features/professionals/schedule_page.dart';
 
 import 'package:mindcare/screens/professionals/role_guard_screen.dart';
 import 'package:mindcare/screens/my_bookings_screen.dart';
@@ -10,8 +12,10 @@ import 'package:mindcare/widgets/module_card.dart';
 import 'package:mindcare/providers/membership_provider.dart';
 import 'package:mindcare/modules/ansiedad/screens/overview_screen.dart';
 import 'package:mindcare/modules/estudiantil/screens/overview_screen.dart';
+import 'package:mindcare/features/student/student_home_page.dart';
 import 'package:mindcare/modules/tda_tdh/screens/overview_screen.dart';
 import 'package:mindcare/modules/desarrollo_profesional/screens/overview_screen.dart';
+import 'package:mindcare/modules/teacher_wellbeing/ui/wellbeing_home_page.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -155,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                               icon: Icons.school,
                               color: const Color(0xFF25D366),
                               locked: !isPremium,
-                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StudentOverviewScreen())),
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const StudentHomePage())),
                             ),
                             ModuleCard(
                               title: 'TDA/TDH',
@@ -170,6 +174,13 @@ class HomeScreen extends StatelessWidget {
                               color: Colors.purple,
                               locked: !isPremium,
                               onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const PersonalDevOverviewScreen())),
+                            ),
+                            ModuleCard(
+                              title: 'Mi Bienestar',
+                              icon: Icons.favorite_outline,
+                              color: const Color(0xFF25D366),
+                              locked: false,
+                              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const WellbeingHomePage())),
                             ),
                             ModuleCard(
                               title: 'Profesionales',
@@ -235,9 +246,19 @@ class HomeScreen extends StatelessWidget {
               onTap: () {},
             ),
             ListTile(
+              leading: const Icon(Icons.forum_outlined),
+              title: const Text('Salas de chat'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const RoomsListPage())),
+            ),
+            ListTile(
               leading: const Icon(Icons.support_agent),
               title: const Text('Soporte / Ayuda'),
               onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.video_call_outlined),
+              title: const Text('Mis turnos (video)'),
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SchedulePage())),
             ),
             const Spacer(),
             if (Firebase.apps.isNotEmpty)

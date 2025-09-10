@@ -6,6 +6,9 @@ import '../../core/strings.dart';
 import '../../widgets/module_card.dart';
 import '../../widgets/checklist_sheet.dart';
 import 'student_controller.dart';
+import 'student_resources_page.dart';
+import 'student_routines_page.dart';
+import 'student_goals_page.dart';
 
 class StudentHomePage extends StatelessWidget {
   const StudentHomePage({super.key});
@@ -30,7 +33,12 @@ class StudentHomePage extends StatelessWidget {
           Wrap(spacing: 8, runSpacing: 8, children: [
             OutlinedButton(onPressed: () => controller.startFocus(minutes: 20), child: const Text(S.focus20)),
             OutlinedButton(onPressed: () => _showAudioPlayerSheet(context, minutes: 5), child: const Text(S.break5)),
-            OutlinedButton(onPressed: () => context.go('/student/routines'), child: const Text(S.startRoutine)),
+            OutlinedButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const StudentRoutinesPage()),
+              ),
+              child: const Text(S.startRoutine),
+            ),
           ]),
           const SizedBox(height: 24),
           _SectionHeader(text: S.canHelpNow),
@@ -60,9 +68,30 @@ class StudentHomePage extends StatelessWidget {
               childAspectRatio: 1,
             ),
             children: [
-              ModuleCard(title: S.resources, icon: Icons.menu_book, color: theme.colorScheme.primary, onTap: () => context.go('/student/resources')),
-              ModuleCard(title: S.routines, icon: Icons.view_timeline, color: theme.colorScheme.secondary, onTap: () => context.go('/student/routines')),
-              ModuleCard(title: S.goals, icon: Icons.flag, color: theme.colorScheme.tertiary, onTap: () => context.go('/student/goals')),
+              ModuleCard(
+                title: S.resources,
+                icon: Icons.menu_book,
+                color: theme.colorScheme.primary,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const StudentResourcesPage()),
+                ),
+              ),
+              ModuleCard(
+                title: S.routines,
+                icon: Icons.view_timeline,
+                color: theme.colorScheme.secondary,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const StudentRoutinesPage()),
+                ),
+              ),
+              ModuleCard(
+                title: S.goals,
+                icon: Icons.flag,
+                color: theme.colorScheme.tertiary,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const StudentGoalsPage()),
+                ),
+              ),
             ],
           ),
         ],
