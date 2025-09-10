@@ -23,7 +23,7 @@ Este PR agrega el nuevo módulo Estudiante con páginas Home, Recursos, Rutinas 
 - Animaciones suaves (200–300ms), sin dependencias nuevas.
 
 ## Consideraciones
-- Coexisten vistas legacy en `lib/modules/estudiantil/*`. Se unifica navegación principal apuntando a `StudentHomePage` (ruta `/estudiantil` ahora abre el módulo nuevo). Pendiente retirar legacy o migrar contenido.
+- Se retiró el legacy `lib/modules/estudiantil/*`. La navegación principal y la ruta `/estudiantil` apuntan a `StudentHomePage` en `features/student`.
 - La app no usa `MaterialApp.router`; las páginas Estudiante navegan con `Navigator` para compatibilidad, además de rutas registradas.
 
 ## Pasos de prueba
