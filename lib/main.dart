@@ -14,6 +14,8 @@ import 'providers/role_provider.dart';
 import 'providers/professionals_provider.dart';
 import 'providers/appointments_provider.dart';
 import 'package:mindcare/screens/welcome_screen.dart';
+import 'modules/teacher_wellbeing/state/teacher_wellbeing_controller.dart';
+import 'features/student/student_controller.dart';
 
 Future<void> main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -38,9 +40,32 @@ Future<void> main() async {
 }
 
 FirebaseOptions? _firebaseOptionsFromEnv() {
-  final apiKey = dotenv.env['FIREBASE_API_KEY'];
-  final appId = dotenv.env['FIREBASE_APP_ID'];
-  final projectId = dotenv.env['FIREBASE_PROJECT_ID'];
+  String _read(String key) {
+    final v = dotenv.maybeGet(key);
+    if (v != null && v.trim().isNotEmpty) return v;
+    // Allow passing from build via --dart-define
+    switch (key) {
+      case 'FIREBASE_API_KEY':
+        return const String.fromEnvironment('FIREBASE_API_KEY', defaultValue: '');
+      case 'FIREBASE_APP_ID':
+        return const String.fromEnvironment('FIREBASE_APP_ID', defaultValue: '');
+      case 'FIREBASE_PROJECT_ID':
+        return const String.fromEnvironment('FIREBASE_PROJECT_ID', defaultValue: '');
+      case 'FIREBASE_MESSAGING_SENDER_ID':
+        return const String.fromEnvironment('FIREBASE_MESSAGING_SENDER_ID', defaultValue: '');
+      case 'FIREBASE_AUTH_DOMAIN':
+        return const String.fromEnvironment('FIREBASE_AUTH_DOMAIN', defaultValue: '');
+      case 'FIREBASE_STORAGE_BUCKET':
+        return const String.fromEnvironment('FIREBASE_STORAGE_BUCKET', defaultValue: '');
+      case 'FIREBASE_MEASUREMENT_ID':
+        return const String.fromEnvironment('FIREBASE_MEASUREMENT_ID', defaultValue: '');
+      default:
+        return '';
+    }
+  }
+  final apiKey = _read('FIREBASE_API_KEY');
+  final appId = _read('FIREBASE_APP_ID');
+  final projectId = _read('FIREBASE_PROJECT_ID');
   // Guard: avoid initializing Firebase with placeholder values from .env.sample
   bool _isPlaceholder(String? v) {
     if (v == null) return true;
@@ -55,10 +80,10 @@ FirebaseOptions? _firebaseOptionsFromEnv() {
     apiKey: apiKey,
     appId: appId,
     projectId: projectId,
-    messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID'] ?? '',
-    authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'],
-    storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'],
-    measurementId: dotenv.env['FIREBASE_MEASUREMENT_ID'],
+    messagingSenderId: _read('FIREBASE_MESSAGING_SENDER_ID'),
+    authDomain: _read('FIREBASE_AUTH_DOMAIN').isEmpty ? null : _read('FIREBASE_AUTH_DOMAIN'),
+    storageBucket: _read('FIREBASE_STORAGE_BUCKET').isEmpty ? null : _read('FIREBASE_STORAGE_BUCKET'),
+    measurementId: _read('FIREBASE_MEASUREMENT_ID').isEmpty ? null : _read('FIREBASE_MEASUREMENT_ID'),
   );
 }
 
@@ -73,6 +98,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RoleProvider()),
         ChangeNotifierProvider(create: (_) => ProfessionalsProvider()),
         ChangeNotifierProvider(create: (_) => AppointmentsProvider()),
+        ChangeNotifierProvider(create: (_) => TeacherWellbeingController()),
+        ChangeNotifierProvider(create: (_) => StudentController()..loadMock()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
