@@ -41,5 +41,20 @@ class Professional {
         locations: List<String>.from(m['locations'] ?? const []),
         languages: List<String>.from(m['languages'] ?? const []),
       );
-}
 
+  factory Professional.fromJson(Map<String, dynamic> json) => Professional(
+        proId: (json['proId'] ?? json['id'] ?? '').toString(),
+        userId: (json['userId'] ?? '').toString(),
+        fullName: (json['fullName'] ?? json['name'] ?? '').toString(),
+        specialties: List<String>.from(json['specialties'] ??
+            (json['specialty'] != null ? [json['specialty'].toString()] : const [])),
+        bio: (json['bio'] ?? '').toString(),
+        avatarUrl: json['avatarUrl']?.toString(),
+        phone: json['phone']?.toString(),
+        price: (json['price'] as num?)?.toDouble(),
+        isActive: (json['isActive'] as bool?) ?? true,
+        rating: (json['rating'] as num?)?.toDouble(),
+        locations: List<String>.from(json['locations'] ?? const []),
+        languages: List<String>.from(json['languages'] ?? const []),
+      );
+}

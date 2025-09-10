@@ -16,7 +16,9 @@ class StripeService {
 
   static Future<void> initFromEnv() async {
     if (_initialized) return;
-    final pk = dotenv.env['STRIPE_PUBLISHABLE_KEY'];
+    final pk = dotenv.maybeGet('STRIPE_PUBLISHABLE_KEY')?.trim().isNotEmpty == true
+        ? dotenv.maybeGet('STRIPE_PUBLISHABLE_KEY')
+        : const String.fromEnvironment('STRIPE_PUBLISHABLE_KEY', defaultValue: '');
     if (pk != null && pk.trim().isNotEmpty && !pk.toLowerCase().contains('pk_test_your_key_here')) {
       stripe.Stripe.publishableKey = pk;
       stripe.Stripe.merchantIdentifier = 'MindCare';
@@ -47,5 +49,16 @@ class StripeService {
       return false;
     }
   }
-}
 
+  // Compatibility helpers for legacy billing provider code
+  // These stubs allow flows to proceed in development without full backend wiring.
+  Future<String> createCustomer({required String email, required String name}) async {
+    // TODO: replace with backend-created customer id
+    return 'cus_dev_placeholder';
+  }
+
+  Future<bool> processPayment({required String amount, required String currency, required String customerId}) async {
+    final cents = int.tryParse(amount) ?? 0;
+    return await StripeService.maybePay(amountCents: cents, currency: currency);
+  }
+}

@@ -1,14 +1,18 @@
+# coding: utf-8
 # Fuerza CDN y shallow clone para acelerar clones de pods (como BoringSSL-GRPC)
-source 'https://cdn.cocoapods.org'
+source 'https://cdn.cocoapods.org/'
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 ENV['COCOAPODS_GIT_CLONE_DEPTH'] = '1'  # <— CLAVE: clona con --depth=1
+ENV['LANG'] = 'en_US.UTF-8'
+ENV['LC_ALL'] = 'en_US.UTF-8'
+# Evita cuelgues por IO paths en scripts de CocoaPods en builds grandes
+ENV['COCOAPODS_DISABLE_INPUT_OUTPUT_PATHS'] = 'true'
 
 platform :ios, '16.0'
 use_frameworks! :linkage => :static
 
+# Nota: 'git_source' no es parte del DSL de Podfile; removido para evitar errores.
 
-# CocoaPods analytics sends network stats synchronously affecting flutter build latency.
-ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
   'Debug' => :debug,
@@ -34,8 +38,7 @@ require File.expand_path(File.join('packages', 'flutter_tools', 'bin', 'podhelpe
 flutter_ios_podfile_setup
 
 target 'Runner' do
-  # Prefer static linking to avoid integration issues with Flutter and Firebase
-  use_frameworks! :linkage => :static
+  # Linking estático ya configurado globalmente arriba
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
   target 'RunnerTests' do
@@ -49,7 +52,26 @@ post_install do |installer|
     target.build_configurations.each do |config|
       # Fuerza mínimo iOS para todos los pods
       config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '16.0'
+      # Build más rápido en Debug (solo arquitectura activa)
+      if config.name == 'Debug'
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
+      end
+      # Excluir arm64 del simulador SOLO en Macs Intel (x86_64).
+      # En Apple Silicon, permitir arm64 para el simulador.
+      begin
+        host_arch = `uname -m`.strip
+        if host_arch == 'x86_64'
+          config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+          # Deja explícito ARCHS para el simulador en Intel
+          config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'x86_64'
+        else
+          config.build_settings.delete('EXCLUDED_ARCHS[sdk=iphonesimulator*]')
+          config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+        end
+      rescue
+        # Si falla la detección, no forzar exclusiones.
+        config.build_settings.delete('EXCLUDED_ARCHS[sdk=iphonesimulator*]')
+      end
     end
   end
 end
-

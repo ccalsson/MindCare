@@ -5,8 +5,9 @@ const functions = require("firebase-functions");
 const rate_limiter_flexible_1 = require("rate-limiter-flexible");
 const limiter = new rate_limiter_flexible_1.RateLimiterMemory({ points: 5, duration: 60 });
 exports.rateLimit = functions.https.onRequest(async (req, res) => {
+    var _a;
     try {
-        await limiter.consume(req.ip);
+        await limiter.consume((_a = req.ip) !== null && _a !== void 0 ? _a : 'unknown');
         res.status(200).send('ok');
     }
     catch (e) {

@@ -1,18 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.migrateSegments = exports.stripeWebhook = exports.mfaAdmin = exports.anonymize = exports.auditLog = exports.rateLimit = exports.syncProfessionalAvailability = exports.seedInitialData = exports.verifyProfessional = exports.webhookStripe = exports.createBooking = exports.syncPrices = void 0;
+exports.onMessageCreate = exports.onHighCraving = exports.dailyCoach = exports.migrateSegments = exports.stripeWebhook = exports.mfaAdmin = exports.anonymize = exports.auditLog = exports.rateLimit = exports.syncProfessionalAvailability = exports.seedInitialData = exports.verifyProfessional = exports.webhookStripe = exports.createBooking = exports.syncPrices = void 0;
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const stripe_1 = require("stripe");
-const cors = require("cors");
 // Inicializar Firebase Admin
 admin.initializeApp();
 // Inicializar Stripe
 const stripe = new stripe_1.default(functions.config().stripe.secret_key, {
-    apiVersion: '2023-10-16',
+    apiVersion: '2023-08-16',
 });
-// Middleware CORS
-const corsHandler = cors({ origin: true });
 // Función para sincronizar precios de Stripe
 exports.syncPrices = functions.https.onCall(async (data, context) => {
     // Verificar autenticación
@@ -120,11 +117,9 @@ exports.createBooking = functions.https.onCall(async (data, context) => {
             createdAt: admin.firestore.FieldValue.serverTimestamp(),
         });
         // Marcar slot como reservado
-        await admin.firestore()
-            .collection('availability')
-            .doc(professionalId)
-            .update({
-            'slots': admin.firestore.FieldValue.arrayRemove(slot),
+        const availRef = admin.firestore().collection('availability').doc(professionalId);
+        await availRef.update({ 'slots': admin.firestore.FieldValue.arrayRemove(slot) });
+        await availRef.update({
             'slots': admin.firestore.FieldValue.arrayUnion(Object.assign(Object.assign({}, slot), { status: 'booked', bookingId: bookingRef.id })),
         });
         return {
@@ -268,7 +263,8 @@ function getCurrencyForRegion(region) {
     }
 }
 async function handlePaymentSuccess(paymentIntent) {
-    const { professionalId, slotId, userId, type } = paymentIntent.metadata;
+    var _a;
+    const { type } = (_a = paymentIntent.metadata) !== null && _a !== void 0 ? _a : {};
     if (type === 'consultation') {
         // Actualizar estado de la reserva
         const bookings = await admin.firestore()
@@ -303,4 +299,10 @@ var webhooks_1 = require("./stripe/webhooks");
 Object.defineProperty(exports, "stripeWebhook", { enumerable: true, get: function () { return webhooks_1.stripeWebhook; } });
 var migrateSegments_1 = require("./maintenance/migrateSegments");
 Object.defineProperty(exports, "migrateSegments", { enumerable: true, get: function () { return migrateSegments_1.migrateSegments; } });
+var ai_1 = require("./ai");
+Object.defineProperty(exports, "dailyCoach", { enumerable: true, get: function () { return ai_1.dailyCoach; } });
+var triggers_1 = require("./triggers");
+Object.defineProperty(exports, "onHighCraving", { enumerable: true, get: function () { return triggers_1.onHighCraving; } });
+var chat_1 = require("./chat");
+Object.defineProperty(exports, "onMessageCreate", { enumerable: true, get: function () { return chat_1.onMessageCreate; } });
 //# sourceMappingURL=index.js.map

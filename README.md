@@ -25,3 +25,8 @@ CI/CD
 Entorno
 - `.env.sample` contiene claves de Firebase, Supabase, Stripe, etc.
 - No comitear `.env` ni claves; el repo ignora `server/keys/*.json`.
+
+Módulo Adicciones (nuevo)
+- Rutas GoRouter: `/addictions`, `/addictions/screening/:instrument/:version`, `/addictions/plan`, `/addictions/checkin`, `/addictions/progress`, `/addictions/exercises`, `/addictions/help`.
+- Modelos y repos: `lib/features/addictions/`.
+- Reglas Firestore actualizadas para subcolecciones en `users/{uid}`.

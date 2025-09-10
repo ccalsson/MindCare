@@ -103,7 +103,12 @@ class _BookingDialogState extends State<BookingDialog> {
                               final end = start.add(const Duration(minutes: 50));
                               final ok = await StripeService.maybePay(amountCents: 10000, currency: 'usd', requirePayment: false);
                               if (!ok) return;
-                              await _appointments.create(widget.proId, 'me', start, end);
+                              await _appointments.create(
+                                proId: widget.proId,
+                                userId: 'me',
+                                startsAt: start,
+                                endsAt: end,
+                              );
                               if (!mounted) return;
                               Navigator.pop(context);
                               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Cita agendada')));

@@ -1,18 +1,15 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import Stripe from 'stripe';
-import * as cors from 'cors';
 
 // Inicializar Firebase Admin
 admin.initializeApp();
 
 // Inicializar Stripe
 const stripe = new Stripe(functions.config().stripe.secret_key, {
-  apiVersion: '2023-10-16',
+  apiVersion: '2023-08-16',
 });
 
-// Middleware CORS
-const corsHandler = cors({ origin: true });
 
 // Función para sincronizar precios de Stripe
 export const syncPrices = functions.https.onCall(async (data, context) => {
@@ -137,17 +134,15 @@ export const createBooking = functions.https.onCall(async (data, context) => {
     });
     
     // Marcar slot como reservado
-    await admin.firestore()
-      .collection('availability')
-      .doc(professionalId)
-      .update({
-        'slots': admin.firestore.FieldValue.arrayRemove(slot),
-        'slots': admin.firestore.FieldValue.arrayUnion({
-          ...slot,
-          status: 'booked',
-          bookingId: bookingRef.id,
-        }),
-      });
+    const availRef = admin.firestore().collection('availability').doc(professionalId);
+    await availRef.update({ 'slots': admin.firestore.FieldValue.arrayRemove(slot) });
+    await availRef.update({
+      'slots': admin.firestore.FieldValue.arrayUnion({
+        ...slot,
+        status: 'booked',
+        bookingId: bookingRef.id,
+      }),
+    });
     
     return {
       success: true,
@@ -171,7 +166,7 @@ export const webhookStripe = functions.https.onRequest(async (req, res) => {
     event = stripe.webhooks.constructEvent(req.rawBody, sig!, endpointSecret);
   } catch (err) {
     console.error('Error verificando webhook:', err);
-    res.status(400).send(`Webhook Error: ${err.message}`);
+    res.status(400).send(`Webhook Error: ${(err as Error).message}`);
     return;
   }
   
@@ -305,7 +300,7 @@ function getCurrencyForRegion(region: string): string {
 }
 
 async function handlePaymentSuccess(paymentIntent: any) {
-  const { professionalId, slotId, userId, type } = paymentIntent.metadata;
+  const { type } = paymentIntent.metadata ?? {};
   
   if (type === 'consultation') {
     // Actualizar estado de la reserva
@@ -339,3 +334,6 @@ export { anonymize } from './analytics/anonymize';
 export { mfaAdmin } from './auth/mfaAdmin';
 export { stripeWebhook } from './stripe/webhooks';
 export { migrateSegments } from './maintenance/migrateSegments';
+export { dailyCoach } from './ai';
+export { onHighCraving } from './triggers';
+export { onMessageCreate } from './chat';

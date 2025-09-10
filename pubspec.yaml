@@ -67,6 +67,13 @@ dependencies:
   health: ^13.1.4
   get_it: ^8.2.0
   just_audio: ^0.10.4
+  url_launcher: ^6.3.0
+  webview_flutter: ^4.7.0
+  firebase_messaging: ^16.0.1
+  image_picker: ^1.1.2
+  file_picker: ^8.0.3
+  record: ^5.1.2
+  cached_network_image: ^3.3.1
 
 
 dev_dependencies:
@@ -84,7 +91,6 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - .env
     - assets/icons/app_icon.png
     - assets/images/splash.png
     - assets/images/placeholder.png

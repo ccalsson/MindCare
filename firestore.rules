@@ -15,6 +15,20 @@ service cloud.firestore {
       allow read, write: if isOwner(uid);
     }
 
+    // Addictions subcollections: only owner can read/write
+    match /users/{uid}/screenings/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/journals/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/plans/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+    match /users/{uid}/events/{docId} {
+      allow read, write: if isOwner(uid);
+    }
+
     match /emotions/{uid}/entries/{entryId} {
       allow read, write: if isOwner(uid);
     }
@@ -89,5 +103,101 @@ service cloud.firestore {
     match /audit_logs/{docId} {
       allow read, write: if hasRole('admin');
     }
+
+    // Public resources for app configuration; writes only by backend
+    match /resources/{id} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
+    match /screening_forms/{instrument} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
+    match /screening_forms/{instrument}/versions/{version} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
+    match /flags/{docId} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
+    
+    // Teacher Wellbeing private data
+    function isAuth() { return request.auth != null; }
+    function uid() { return request.auth.uid; }
+    match /teacher_wellbeing/{userId} {
+      allow read, write: if isAuth() && uid() == userId;
+      match /{sub=**}/{doc} {
+        allow read, write: if isAuth() && uid() == userId;
+      }
+    }
+    // Curated public content
+    match /resources/{resId} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
+    match /routines/{routineId} {
+      allow read: if true;
+      allow write: if false; // DO: Restrict backend writes via Functions
+    }
   }
 }
+    // --- Chat module ---
+    function userRoles() {
+      return isSignedIn() ? request.auth.token.roles : [];
+    }
+    function isAdmin() { return isSignedIn() && request.auth.token.role == 'admin'; }
+    function canAccessRoom(room) {
+      return room.data.isPublic == true ||
+        room.data.allowedRoles.size() == 0 ||
+        (isSignedIn() && room.data.allowedRoles.hasAny(userRoles()));
+    }
+    function isMember(roomId) {
+      return isSignedIn() && exists(/databases/$(database)/documents/rooms/$(roomId)/memberships/$(request.auth.uid));
+    }
+    function isModerator(roomId) {
+      return isSignedIn() && get(/databases/$(database)/documents/rooms/$(roomId)/memberships/$(request.auth.uid)).data.roleInRoom in ['owner','moderator'];
+    }
+
+    match /rooms/{roomId} {
+      allow read: if canAccessRoom(resource);
+      allow create: if false; // seeded/managed by backend
+      allow update, delete: if isAdmin();
+
+      match /memberships/{uid} {
+        allow read: if request.auth != null && (request.auth.uid == uid || isModerator(roomId));
+        allow write: if isModerator(roomId) || (isSignedIn() && request.auth.uid == uid && request.resource.data.diff(resource.data).changedKeys().hasOnly(['joinedAt','roleInRoom']) );
+      }
+
+      match /messages/{messageId} {
+        allow read: if canAccessRoom(get(/databases/$(database)/documents/rooms/$(roomId))) && (
+          !resource.data.needsReview || // hide flagged from others
+          (isSignedIn() && (resource.data.senderId == request.auth.uid || isModerator(roomId) || isAdmin()))
+        );
+
+        allow create: if (
+          isSignedIn() && (
+            isMember(roomId) || canAccessRoom(get(/databases/$(database)/documents/rooms/$(roomId)))
+          ) &&
+          // Not blocked by rate limiter
+          !(exists(/databases/$(database)/documents/rooms/$(roomId)/memberships/$(request.auth.uid)) &&
+            get(/databases/$(database)/documents/rooms/$(roomId)/memberships/$(request.auth.uid)).data.blockedUntil > request.time)
+          && request.resource.data.keys().hasOnly(['senderId','text','type','createdAt','editedAt','deleted','mentions','attachments','needsReview'])
+          && request.resource.data.senderId == request.auth.uid
+          && request.resource.data.type in ['text','image','file','voice']
+          && (request.resource.data.text is string)
+          && (request.resource.data.deleted is bool)
+          && (request.resource.data.needsReview is bool)
+          && (request.resource.data.mentions is list)
+          && (request.resource.data.attachments is list);
+
+        allow update: if isSignedIn() && (
+          request.resource.data.keys().hasOnly(['text','editedAt','deleted']) &&
+          (
+            (resource.data.senderId == request.auth.uid) || isModerator(roomId) || isAdmin()
+          )
+        );
+
+        allow delete: if isSignedIn() && (resource.data.senderId == request.auth.uid || isModerator(roomId) || isAdmin());
+      }
+    }

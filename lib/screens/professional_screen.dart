@@ -23,8 +23,8 @@ class ProfessionalScreen extends StatelessWidget {
               builder: (ctx, professionalProvider, child) => ListView.builder(
                 itemCount: professionalProvider.professionals.length,
                 itemBuilder: (ctx, i) => ListTile(
-                  title: Text(professionalProvider.professionals[i].name),
-                  subtitle: Text(professionalProvider.professionals[i].specialty),
+                  title: Text(professionalProvider.professionals[i].fullName),
+                  subtitle: Text(professionalProvider.professionals[i].specialties.join(', ')),
                 ),
               ),
             );

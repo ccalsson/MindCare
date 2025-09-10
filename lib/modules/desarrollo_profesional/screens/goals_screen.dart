@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../personal_dev_provider.dart';
+import 'package:mindcare/modules/desarrollo_personal/personal_dev_provider.dart';
 
 class GoalsScreen extends StatelessWidget {
   const GoalsScreen({super.key});
@@ -28,4 +28,3 @@ class GoalsScreen extends StatelessWidget {
     );
   }
 }
-

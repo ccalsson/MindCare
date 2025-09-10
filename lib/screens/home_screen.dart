@@ -11,7 +11,6 @@ import 'package:mindcare/screens/my_bookings_screen.dart';
 import 'package:mindcare/widgets/module_card.dart';
 import 'package:mindcare/providers/membership_provider.dart';
 import 'package:mindcare/modules/ansiedad/screens/overview_screen.dart';
-import 'package:mindcare/modules/estudiantil/screens/overview_screen.dart';
 import 'package:mindcare/features/student/student_home_page.dart';
 import 'package:mindcare/modules/tda_tdh/screens/overview_screen.dart';
 import 'package:mindcare/modules/desarrollo_profesional/screens/overview_screen.dart';

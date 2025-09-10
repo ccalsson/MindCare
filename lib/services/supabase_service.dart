@@ -10,8 +10,14 @@ class SupabaseService {
 
   static Future<void> init() async {
     if (_initialized) return;
-    final url = dotenv.env['SUPABASE_URL'];
-    final anon = dotenv.env['SUPABASE_ANON_KEY'];
+    final url = (dotenv.maybeGet('SUPABASE_URL')?.trim().isNotEmpty == true
+            ? dotenv.maybeGet('SUPABASE_URL')
+            : const String.fromEnvironment('SUPABASE_URL', defaultValue: ''))
+        ?.trim();
+    final anon = (dotenv.maybeGet('SUPABASE_ANON_KEY')?.trim().isNotEmpty == true
+            ? dotenv.maybeGet('SUPABASE_ANON_KEY')
+            : const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: ''))
+        ?.trim();
     _configChecked = true;
     _hasConfig = _valid(url) && _valid(anon);
     if (!_hasConfig) {
@@ -23,7 +29,18 @@ class SupabaseService {
   }
 
   static bool get isInitialized => _initialized;
-  static bool get hasConfig => _configChecked ? _hasConfig : _valid(dotenv.env['SUPABASE_URL']) && _valid(dotenv.env['SUPABASE_ANON_KEY']);
+  static bool get hasConfig {
+    if (_configChecked) return _hasConfig;
+    final url = (dotenv.maybeGet('SUPABASE_URL')?.trim().isNotEmpty == true
+            ? dotenv.maybeGet('SUPABASE_URL')
+            : const String.fromEnvironment('SUPABASE_URL', defaultValue: ''))
+        ?.trim();
+    final anon = (dotenv.maybeGet('SUPABASE_ANON_KEY')?.trim().isNotEmpty == true
+            ? dotenv.maybeGet('SUPABASE_ANON_KEY')
+            : const String.fromEnvironment('SUPABASE_ANON_KEY', defaultValue: ''))
+        ?.trim();
+    return _valid(url) && _valid(anon);
+  }
 
   static bool _valid(String? v) {
     if (v == null) return false;

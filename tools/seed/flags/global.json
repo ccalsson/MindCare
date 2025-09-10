@@ -1,0 +1,11 @@
+{
+  "crisisHotlines": {
+    "AR": [
+      { "name": "Línea de Ayuda (AR)", "phone": "+54110000000", "url": "https://ejemplo.ar/ayuda" }
+    ],
+    "BR": [
+      { "name": "Linha de Ajuda (BR)", "phone": "+550110000000", "url": "https://exemplo.br/ajuda" }
+    ]
+  },
+  "instrumentsEnabled": ["AUDIT","DAST","ASSIST","IGDS9"]
+}

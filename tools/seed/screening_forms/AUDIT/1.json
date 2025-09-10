@@ -1,0 +1,20 @@
+{
+  "instrument": "AUDIT",
+  "version": 1,
+  "questions": [
+    {"id": "q1", "text": "¿Con qué frecuencia consume alcohol?", "type": "single", "options": ["Nunca", "Mensual", "Semanal", "Diario"]},
+    {"id": "q2", "text": "¿Cuántas bebidas consume en un día típico?", "type": "scale"},
+    {"id": "q3", "text": "¿Bebe seis o más bebidas en una ocasión?", "type": "single", "options": ["Nunca", "Menos de mensual", "Mensual", "Semanal", "Diario"]},
+    {"id": "q4", "text": "¿Ha fallado en responsabilidades por beber?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q5", "text": "¿Necesita una bebida por la mañana?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q6", "text": "¿Siente culpa por beber?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q7", "text": "¿No recuerda lo ocurrido por beber?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q8", "text": "¿Ha resultado herido usted u otro por beber?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q9", "text": "¿Algún familiar/amigo preocupado por su bebida?", "type": "single", "options": ["No", "Sí"]},
+    {"id": "q10", "text": "¿Desea reducir su consumo?", "type": "single", "options": ["No", "Sí"]}
+  ],
+  "scoring": {
+    "type": "sum",
+    "bands": {"low": "<=7", "moderate": "<=15", "high": ">15"}
+  }
+}

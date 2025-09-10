@@ -47,5 +47,16 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<!-- Privacy usage descriptions -->
+		<key>NSCameraUsageDescription</key>
+		<string>Necesitamos acceso a la cámara para permitirte tomar y enviar imágenes.</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>Necesitamos acceso al micrófono para grabar y enviar notas de voz.</string>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Necesitamos acceso a tu biblioteca de fotos para adjuntar imágenes.</string>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>Necesitamos permiso para guardar contenido en tu galería.</string>
+		<key>NSFaceIDUsageDescription</key>
+		<string>Usamos Face ID para iniciar sesión de forma segura.</string>
 	</dict>
 </plist>
