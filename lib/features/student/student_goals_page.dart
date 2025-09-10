@@ -79,9 +79,9 @@ class _Sparkline extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: 28,
+      width: double.infinity,
       child: CustomPaint(
         painter: _SparkPainter(),
-        size: const Size(double.infinity as double, 28),
       ),
     );
   }
@@ -112,4 +112,3 @@ class _SparkPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
-
