@@ -17,7 +17,7 @@ dependencies:
   provider: ^6.1.1
   
   # HTTP & API
-  http: ^0.13.5
+  http: ^1.5.0
   
   # Storage & Cache
   shared_preferences: ^2.2.2
