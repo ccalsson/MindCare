@@ -1,22 +1,59 @@
-# MindCare
+# SAMI 1
 
-MindCare es una app de bienestar mental construida con Flutter y Firebase.
+Prototipo multiplataforma para el Sistema de Alertas y Monitoreo Industrial (SAMI 1). La aplicación está construida con Flutter 3.24+, arquitectura modular, navegación con `go_router`, estado con Provider y persistencia local con Hive.
 
-## Setup
+## Requisitos
+- Flutter 3.24.0 o superior (Dart 3.x).
+- Opcional: [FVM](https://fvm.app/) para gestionar versiones (`fvm use 3.24.0`).
 
-1. Copiá `.env.sample` a `.env` y completá las variables necesarias.
-2. Ejecutá `flutter pub get`.
-3. Para Cloud Functions: `npm --prefix server/functions ci`.
+## Instalación
+```bash
+flutter pub get
+```
 
-## App Check y Stripe
-- Configurá Firebase App Check con la llave de sitio para web (`APP_CHECK_SITE_KEY`).
-- Añadí las claves de Stripe (`STRIPE_SECRET`, `STRIPE_WEBHOOK_SECRET`).
+## Ejecución
+- Web: `flutter run -d chrome`
+- Android/iOS: `flutter run`
+- Escritorio (macOS/Windows/Linux): `flutter run`
 
-## Build
-- Android: `flutter build apk`
-- iOS: `flutter build ios`
-- Web: `flutter build web`
+## Credenciales demo
+- Usuario: `ClaudioC`
+- Contraseña: `ABCD1234`
 
-Para más detalles de seguridad consultá [README_SECURITY.md](README_SECURITY.md).
+## Flujo básico
+1. Inicia la app y selecciona **Iniciar sesión** desde la pantalla de bienvenida.
+2. Ingresa las credenciales de prueba para acceder al dashboard.
+3. Navega los distintos módulos desde la barra inferior (móvil) o el NavigationRail (escritorio).
+4. En **Ajustes** puedes alternar el tema claro/oscuro, idioma y reiniciar la demo.
 
-En iOS/macOS configurá Signing & Capabilities en Xcode antes de compilar.
+### Reiniciar la base local
+En **Ajustes → Reiniciar demo** se borra la base Hive y se vuelve a sembrar toda la información mock (empresa, usuarios, alertas, etc.).
+
+## Arquitectura
+```
+lib/
+  core/        # routing, tema, utilidades
+  data/        # modelos, repositorios e integración con Hive
+  domain/      # entidades y casos de uso
+  features/    # módulos funcionales (auth, dashboard, alerts, etc.)
+  shared/      # providers y widgets compartidos
+```
+- `provider` para el manejo de estado.
+- `go_router` para navegación con `StatefulShellRoute`.
+- `Hive` como almacenamiento local offline-first.
+- Hash de contraseñas con Argon2id (package `cryptography`).
+
+## Scripts útiles
+- `flutter pub get`
+- `flutter run`
+- `flutter test`
+
+## Testing
+Incluye pruebas unitarias para autenticación y repositorios básicos. Ejecuta:
+```bash
+flutter test
+```
+
+## Notas
+- El registro de usuarios está bloqueado para usuarios finales. El formulario de solicitud genera un ticket local que se almacena en Hive.
+- Las descargas de reportes generan archivos mock (escritorio) o almacenan el contenido en memoria (web).
