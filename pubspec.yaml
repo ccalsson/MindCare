@@ -34,6 +34,7 @@ dependencies:
   firebase_analytics: ^12.0.1
   firebase_remote_config: ^6.0.1
   cloud_functions: ^6.0.1
+  firebase_messaging: ^16.0.1
   
   # Payments
   flutter_stripe: ^12.0.2
@@ -54,8 +55,14 @@ dependencies:
   
   # Utils
   uuid: ^4.2.1
-  firebase_crashlytics: ^3.5.7
-  firebase_performance: ^0.9.4+7
+  firebase_crashlytics: ^5.0.1
+  firebase_performance: ^0.11.0+1
+  local_auth: ^2.1.6
+  flutter_secure_storage: ^9.0.0
+  # Migración desde encrypt/pointycastle -> cryptography
+  cryptography: ^2.7.0
+  cryptography_flutter: ^2.3.2
+  supabase_flutter: ^2.5.0
   health: ^13.1.4
   get_it: ^8.2.0
   just_audio: ^0.10.4

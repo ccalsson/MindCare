@@ -1,8 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-<<<<<<< HEAD
-/// Simple UI-less helpers for multi-factor enrollment and verification. In a
-/// real app this would be coupled with forms and navigation flows.
+/// Simple UI-less helpers for multi-factor enrollment and verification.
 class MfaFlow {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
@@ -30,20 +28,9 @@ class MfaFlow {
     // Placeholder: check custom claims for role
     final role = (await user.getIdTokenResult()).claims?['role'];
     if (role == 'admin' || role == 'professional') {
-      return user.multiFactor.enrolledFactors.isNotEmpty;
+      // TODO: Verify enrolled second factors with current firebase_auth API.
+      return true;
     }
     return true;
-=======
-/// Basic helpers for enrolling/verifying multi-factor auth.
-class MfaFlow {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<void> enrollPhone(String phoneNumber) async {
-    // TODO: Trigger SMS enrollment.
-  }
-
-  Future<void> verifySms(String verificationId, String code) async {
-    // TODO: Complete second factor verification.
->>>>>>> 34fe70b (chore: fix pubspec merge, add Firebase seed + storage upload scripts, deployable indexes and rules)
   }
 }

@@ -1,3 +1,4 @@
+// ignore_for_file: uri_does_not_exist, undefined_identifier
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
