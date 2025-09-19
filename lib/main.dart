@@ -1,182 +1,85 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:go_router/go_router.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'dart:io' show Platform;
+import 'package:provider/provider.dart';
 
-// Core services
-import 'config/web_optimizations.dart';
-import 'core/config/firebase_config.dart';
-import 'core/config/remote_config_service.dart';
-import 'core/ai/ai_coach_service.dart';
-import 'services/stripe_service.dart';
-
-// Router
-import 'core/router/app_router.dart';
-
-// Providers
-import 'core/providers/auth_provider.dart';
-import 'core/providers/subscription_provider.dart';
-import 'core/providers/ai_provider.dart';
-import 'core/billing/providers/billing_provider.dart';
+import 'bootstrap/app_bootstrap.dart';
+import 'core/config/app_config.dart';
+import 'core/router/new_app_router.dart';
+import 'core/ws/alerts_realtime_service.dart';
+import 'core/logging/app_logger.dart';
+import 'domain/cameras/cameras_repository.dart';
+import 'data/alerts/alerts_repository_impl.dart';
+import 'domain/fuel/fuel_repository.dart';
+import 'domain/tools/tools_repository.dart';
+import 'domain/operators/operators_repository.dart';
+import 'domain/projects/projects_repository.dart';
+import 'domain/reports/reports_repository.dart';
+import 'domain/admin/admin_repository.dart';
+import 'features/auth/controllers/auth_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Cargar variables de entorno
-  await dotenv.load(fileName: "env.example");
-
-  // Inicializar Firebase
-  FirebaseOptions firebaseOptions;
-  if (kIsWeb) {
-    firebaseOptions = const FirebaseOptions(
-      apiKey: FirebaseConfig.webApiKey,
-      authDomain: FirebaseConfig.webAuthDomain,
-      projectId: FirebaseConfig.webProjectId,
-      storageBucket: FirebaseConfig.webStorageBucket,
-      messagingSenderId: FirebaseConfig.webMessagingSenderId,
-      appId: FirebaseConfig.webAppId,
-    );
-  } else if (Platform.isAndroid) {
-    firebaseOptions = const FirebaseOptions(
-      apiKey: FirebaseConfig.androidApiKey,
-      authDomain: FirebaseConfig.androidAuthDomain,
-      projectId: FirebaseConfig.androidProjectId,
-      storageBucket: FirebaseConfig.androidStorageBucket,
-      messagingSenderId: FirebaseConfig.androidMessagingSenderId,
-      appId: FirebaseConfig.androidAppId,
-    );
-  } else if (Platform.isIOS) {
-    firebaseOptions = const FirebaseOptions(
-      apiKey: FirebaseConfig.iosApiKey,
-      authDomain: FirebaseConfig.iosAuthDomain,
-      projectId: FirebaseConfig.iosProjectId,
-      storageBucket: FirebaseConfig.iosStorageBucket,
-      messagingSenderId: FirebaseConfig.iosMessagingSenderId,
-      appId: FirebaseConfig.iosAppId,
-    );
-  } else {
-    throw UnsupportedError('Unsupported platform');
-  }
-
-  await Firebase.initializeApp(options: firebaseOptions);
-
-  // Inicializar Remote Config
-  final remoteConfigService = RemoteConfigService();
-  await remoteConfigService.initialize();
-
-  // Optimizaciones para web
-  if (kIsWeb) {
-    WebOptimizations.configure();
-  }
-
-  runApp(MyApp(remoteConfigService: remoteConfigService));
+  final scope = await AppBootstrap.init();
+  runApp(SamiApp(scope: scope));
 }
 
-class MyApp extends StatelessWidget {
-  final RemoteConfigService remoteConfigService;
+class SamiApp extends StatefulWidget {
+  const SamiApp({super.key, required this.scope});
 
-  const MyApp({super.key, required this.remoteConfigService});
+  final AppScope scope;
+
+  @override
+  State<SamiApp> createState() => _SamiAppState();
+}
+
+class _SamiAppState extends State<SamiApp> {
+  late final AuthController _authController;
+  late final GoRouter _router;
+
+  @override
+  void initState() {
+    super.initState();
+    _authController = AuthController(
+      widget.scope.authRepository,
+      widget.scope.alertsRepository,
+      widget.scope.alertsRealtimeService,
+      AppLogger.instance,
+    );
+    _authController.initialize();
+    _router = AppRouter.create(_authController);
+  }
 
   @override
   Widget build(BuildContext context) {
-    ContextProvider.setContext(context);
     return MultiProvider(
       providers: [
-        // Remote Config Service
-        Provider<RemoteConfigService>.value(
-          value: remoteConfigService,
-        ),
-
-        // AI Service
-        Provider<AiCoachService>(
-          create: (_) => AiCoachService(
-            apiKey: dotenv.env['OPENAI_API_KEY'] ?? '',
-          ),
-        ),
-
-        // Stripe Service
-        Provider<StripeService>(
-          create: (_) => StripeService(
-            secretKey: dotenv.env['STRIPE_SECRET_KEY'] ?? '',
-            publishableKey: dotenv.env['STRIPE_PUBLISHABLE_KEY'] ?? '',
-          ),
-        ),
-
-        // Auth Provider
-        ChangeNotifierProvider(
-          create: (context) => AuthProvider(),
-        ),
-
-        // Subscription Provider
-        ChangeNotifierProvider(
-          create: (context) => SubscriptionProvider(),
-        ),
-
-        // AI Provider
-        ChangeNotifierProvider(
-          create: (context) => AiProvider(),
-        ),
-
-        // Billing Provider
-        ChangeNotifierProxyProvider<AuthProvider, BillingProvider>(
-          create: (context) => BillingProvider(
-            context.read<RemoteConfigService>(),
-            context.read<StripeService>(),
-            context.read<AuthProvider>(),
-          ),
-          update: (context, auth, previousBilling) => BillingProvider(
-            context.read<RemoteConfigService>(),
-            context.read<StripeService>(),
-            auth,
-          ),
-        ),
+        Provider<AppConfig>.value(value: widget.scope.config),
+        Provider.value(value: widget.scope.httpClient),
+        Provider.value(value: widget.scope.alertsRepository),
+        Provider<CamerasRepository>.value(value: widget.scope.camerasRepository),
+        Provider<FuelRepository>.value(value: widget.scope.fuelRepository),
+        Provider<ToolsRepository>.value(value: widget.scope.toolsRepository),
+        Provider<OperatorsRepository>.value(
+            value: widget.scope.operatorsRepository),
+        Provider<ProjectsRepository>.value(
+            value: widget.scope.projectsRepository),
+        Provider<ReportsRepository>.value(
+            value: widget.scope.reportsRepository),
+        Provider<AdminRepository>.value(value: widget.scope.adminRepository),
+        Provider<AlertsRealtimeService>.value(
+            value: widget.scope.alertsRealtimeService),
+        Provider.value(value: widget.scope.outboxService),
+        Provider.value(value: widget.scope.connectivityService),
+        ChangeNotifierProvider<AuthController>.value(value: _authController),
       ],
       child: MaterialApp.router(
-        title: 'MindCare',
+        routerConfig: _router,
         debugShowCheckedModeBanner: false,
-
-        // Configuración de localización
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('es', 'ES'),
-          Locale('en', 'US'),
-        ],
-        locale: const Locale('es', 'ES'),
-
-        // Router
-        routerConfig: AppRouter.router,
-
-        // Temas
+        title: 'SAMI',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.teal,
-            brightness: Brightness.light,
-          ),
-          fontFamily: 'Poppins',
-          scaffoldBackgroundColor: Colors.teal[50],
-          pageTransitionsTheme: const PageTransitionsTheme(
-            builders: {
-              TargetPlatform.android: ZoomPageTransitionsBuilder(),
-              TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-            },
-          ),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.teal),
+          useMaterial3: true,
         ),
-        darkTheme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.teal,
-            brightness: Brightness.dark,
-          ),
-          fontFamily: 'Poppins',
-        ),
-        themeMode: ThemeMode.system,
       ),
     );
   }
